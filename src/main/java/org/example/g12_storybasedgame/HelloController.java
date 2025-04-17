@@ -9,6 +9,8 @@ public class HelloController {
 
     @FXML
     protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+        // Ändra texten eller ladda ny scen
+        welcomeText.setText("Loading...");
+        // Här behöver vi logik för att byta till inloggningssidan
     }
 }
