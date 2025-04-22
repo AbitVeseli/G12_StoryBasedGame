@@ -1,4 +1,4 @@
-package org.example.g12_storybasedgame;
+package org.example.g12_storybasedgame.model;
 
 public class User {
     private String username;

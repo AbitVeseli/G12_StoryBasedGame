@@ -1,4 +1,4 @@
-package org.example.g12_storybasedgame; //detta kan behövas ändra senare
+package org.example.g12_storybasedgame.view.menu; //detta kan behövas ändra senare
                                         // om vi ska skapa paket för varje sak
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -50,9 +50,9 @@ public class Homescreen extends Application {
         popupStage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
 
     @Override
     public void start(Stage primaryStage) {

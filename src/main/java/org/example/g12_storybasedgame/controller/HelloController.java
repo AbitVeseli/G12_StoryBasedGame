@@ -1,4 +1,4 @@
-package org.example.g12_storybasedgame;
+package org.example.g12_storybasedgame.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

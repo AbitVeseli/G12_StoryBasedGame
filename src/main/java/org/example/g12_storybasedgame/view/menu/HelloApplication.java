@@ -1,4 +1,4 @@
-package org.example.g12_storybasedgame;
+package org.example.g12_storybasedgame.view.menu;
 
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
@@ -16,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.g12_storybasedgame.model.User;
+
 import java.util.HashMap;
 
 public class HelloApplication extends Application {
@@ -32,7 +34,7 @@ public class HelloApplication extends Application {
 
         primaryStage.setScene(mainScene);
         primaryStage.setTitle("Otome Adventure");
-        primaryStage.setFullScreen(false); // false är endast för testning annars true
+        primaryStage.setFullScreen(true); // false är endast för testning annars true
         primaryStage.setFullScreenExitHint("");
 
         showStartScreen();
@@ -363,6 +365,11 @@ public class HelloApplication extends Application {
 
         Button startGameButton = new Button("Start Game");
         startGameButton.setStyle("-fx-font-size: 1.5em;");
+        startGameButton.setOnAction(e -> {
+            Stage homescreenStage = new Stage();
+            new Homescreen().start(homescreenStage); // Starta Homescreen i ett nytt fönster
+            primaryStage.close(); // Stäng inloggningsfönstret
+        });
 
         VBox layout = new VBox(30);
         layout.setAlignment(Pos.CENTER);
@@ -395,7 +402,7 @@ public class HelloApplication extends Application {
 
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
 }
