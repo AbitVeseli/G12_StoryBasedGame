@@ -17,10 +17,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.g12_storybasedgame.model.User;
+import org.example.g12_storybasedgame.view.homescreen.Homescreen;
 
 import java.util.HashMap;
 
-public class HelloApplication extends Application {
+public class MenuManager extends Application {
     private Stage primaryStage;
     private StackPane rootContainer;
     private HashMap<String, User> users = new HashMap<>();
@@ -34,7 +35,7 @@ public class HelloApplication extends Application {
 
         primaryStage.setScene(mainScene);
         primaryStage.setTitle("Otome Adventure");
-        primaryStage.setFullScreen(true); // false är endast för testning annars true
+        primaryStage.setFullScreen(false); // false är endast för testning annars true
         primaryStage.setFullScreenExitHint("");
 
         showStartScreen();

@@ -1,4 +1,4 @@
-package org.example.g12_storybasedgame.view.menu; //detta kan behövas ändra senare
+package org.example.g12_storybasedgame.view.homescreen; //detta kan behövas ändra senare
                                         // om vi ska skapa paket för varje sak
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -21,8 +21,11 @@ import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
+import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
 
 public class Homescreen extends Application {
+
+    private Stage primaryStage;
 
     private void showPopup(String title, String[] contentItems) {
         Stage popupStage = new Stage();
@@ -56,8 +59,12 @@ public class Homescreen extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage; // Spara primaryStage för senare användning
+        //primaryStage.setFullScreen(true);
+
         // Root layout
         BorderPane root = new BorderPane();
+
 
         // Set background image (denna kod är inte förändrad)
         BackgroundImage bgImage = new BackgroundImage(
@@ -177,7 +184,13 @@ public class Homescreen extends Application {
                     + "-fx-cursor: hand;"));            // Hand-cursor
 
             //  Koppling till varje knapp senare kan skrivas in här
-
+            //Storyline
+            if (buttonLabels[i].equals("Storyline")) {
+                btn.setOnAction(e -> {
+                    StorylineScene storylineScene = new StorylineScene(primaryStage);
+                    primaryStage.setScene(storylineScene.getScene());
+                });
+            }
 
             // Gör så att varje knapp växer och delar utrymmet jämt
             HBox.setHgrow(btn, Priority.ALWAYS);  // Gör att varje knapp växer jämt och fyller bredden
