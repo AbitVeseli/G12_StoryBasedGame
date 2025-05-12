@@ -15,6 +15,7 @@ import javafx.util.Duration;
 import java.util.*;
 import javafx.scene.input.MouseEvent;
 import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
+import org.example.g12_storybasedgame.view.homescreen.storyline.Chapter2Scene;
 
 public class Chapter1Scene {
     private Scene scene;
@@ -40,7 +41,7 @@ public class Chapter1Scene {
         this.primaryStage = primaryStage;
         this.root = new BorderPane();
         setupUI();
-        this.scene = new Scene(root, 1024, 768); // Increased height for better layout
+        this.scene = new Scene(root, 1024, 768);
         loadOpeningMessages();
         showNextMessage();
 
@@ -120,18 +121,14 @@ public class Chapter1Scene {
         currentSection = 1;
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Textbox", "It's a regular day and you're on your way to class."},
-                new String[]{"Textbox", "On your way in you accidentally bump into another student."},
-                new String[]{"Textbox", "The student huffs and tells you to watch where you're going."},
-                new String[]{"Textbox", "You recognize this person as Judas Blackthorne."},
-                new String[]{"Textbox", "No one dares to go near him because of his reputation."},
+                new String[]{"Textbox", "You suddenly wake up from sleep because you hear someone calling for you and see a golden bird."},
                 new String[]{"Nugari", "Abita wake up!! You're going to be late to school!!"},
                 new String[]{"Abita", "Ugh, Nugari you're being too loud. Give me 5 more minutes..."},
-                new String[]{"Textbox", "(Scene transitions)"},
-                new String[]{"Abita", "Wow, the weather's so nice today..."},
-                new String[]{"Abita", "A nice breeze and the sun is out, I have a good feeling about today."},
-                new String[]{"Abita", "I should go look for Mara!"},
-                new String[]{"Textbox", "*BAM/CRASH*"},
+
+                new String[]{"Abita (Inner monologue)", "Wow, the weather's so nice today..."},
+                new String[]{"Abita (Inner monologue)", "A nice breeze and the sun is out, I have a good feeling about today."},
+                new String[]{"Abita (Inner monologue)", "I should go look for Mara!"},
+                new String[]{" ", "*BAM/CRASH*"},
                 new String[]{"???", "Huff, are your eyes only for decoration? Watch where you're going!"}
         ));
     }
@@ -143,9 +140,9 @@ public class Chapter1Scene {
         // Clear current dialog and show choices
         dialogContainer.getChildren().clear();
         showChoiceButtons(
-                new String[]{"Option 1", "Apologize (+1 relationship)"},
-                new String[]{"Option 2", "Ignore (-1 relationship)"},
-                new String[]{"Option 3", "Gaslight (-2 relationship)"}
+                new String[]{"Option 1", "Apologize"},
+                new String[]{"Option 2", "Ignore"},
+                new String[]{"Option 3", "Gaslight"}
         );
     }
 
@@ -158,15 +155,15 @@ public class Chapter1Scene {
         switch(choice) {
             case 1 -> {
                 relationshipPoints += 1;
-                messageQueue.add(new String[]{"Judas", "Watch where you're going!"});
+                messageQueue.add(new String[]{"???", "Watch where you're going!"});
             }
             case 2 -> {
                 relationshipPoints -= 1;
-                messageQueue.add(new String[]{"Judas", "HEY!!"});
+                messageQueue.add(new String[]{"???", "HEY!!"});
             }
             case 3 -> {
                 relationshipPoints -= 2;
-                messageQueue.add(new String[]{"Judas", "(Stunned silent)"});
+                messageQueue.add(new String[]{"???", "(Stunned silent)"});
             }
         }
 
@@ -276,7 +273,8 @@ public class Chapter1Scene {
     }
 
     private void showChoiceButtons(String[]... options) {
-        VBox choicesBox = new VBox(15);
+        // Change VBox to HBox for horizontal layout
+        HBox choicesBox = new HBox(15); // 15 is the spacing between buttons
         choicesBox.setAlignment(Pos.CENTER);
         choicesBox.setStyle("-fx-background-color: rgba(255,255,255,0.8); " +
                 "-fx-background-radius: 10; " +
@@ -286,7 +284,10 @@ public class Chapter1Scene {
         promptLabel.setStyle("-fx-font-size: 20px; " +
                 "-fx-text-fill: " + TEXT_COLOR + "; " +
                 "-fx-font-family: 'Arial Rounded MT Bold';");
-        choicesBox.getChildren().add(promptLabel);
+
+        // Create a VBox to hold the prompt above the horizontal buttons
+        VBox container = new VBox(15, promptLabel, choicesBox);
+        container.setAlignment(Pos.CENTER);
 
         for (String[] option : options) {
             Button btn = new Button(option[1]);
@@ -301,10 +302,7 @@ public class Chapter1Scene {
             btn.setEffect(new javafx.scene.effect.DropShadow(5, Color.PINK));
 
             final int choice = Integer.parseInt(option[0].substring(7, 8));
-            btn.setOnAction(e -> {
-                // Add button click sound effect here if desired
-                handleChoice(choice);
-            });
+            btn.setOnAction(e -> handleChoice(choice));
 
             // Hover effect
             btn.setOnMouseEntered(e -> btn.setStyle("-fx-font-size: 16px; " +
@@ -328,7 +326,7 @@ public class Chapter1Scene {
             choicesBox.getChildren().add(btn);
         }
 
-        dialogContainer.getChildren().add(choicesBox);
+        dialogContainer.getChildren().add(container);
     }
 
     private void handleChoice(int choice) {
@@ -372,7 +370,6 @@ public class Chapter1Scene {
             }
         }
 
-        // Add subsequent messages
         messageQueue.addAll(Arrays.asList(
                 new String[]{"Abita", "Ugh, that was so uncomfortable. Let's find a familiar face instead. Oh! it's Emilio!"},
                 new String[]{"Abita", "Valmont, have you heard from Mara?"},
@@ -446,6 +443,10 @@ public class Chapter1Scene {
     }
 
     private void showEndScreen() {
+        // Unlock chapter 2 first
+        StorylineScene storylineScene = new StorylineScene(primaryStage);
+        storylineScene.unlockChapter(2);
+
         dialogContainer.getChildren().clear();
 
         VBox endBox = new VBox(20);
@@ -467,6 +468,17 @@ public class Chapter1Scene {
                 "-fx-text-fill: " + DARK_PINK + "; " +
                 "-fx-font-family: 'Arial Rounded MT Bold';");
 
+        VBox buttonBox = new VBox(15);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button continueButton = new Button("Continue to Chapter 2");
+        continueButton.setStyle("-fx-font-size: 18px; " +
+                "-fx-text-fill: white; " +
+                "-fx-background-color: " + DARK_PINK + "; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 20;");
+        continueButton.setOnAction(e -> showLoadingScreen());
+
         Button backButton = new Button("Return to Storyline Map");
         backButton.setStyle("-fx-font-size: 18px; " +
                 "-fx-text-fill: white; " +
@@ -474,12 +486,45 @@ public class Chapter1Scene {
                 "-fx-padding: 10 20; " +
                 "-fx-background-radius: 20;");
         backButton.setOnAction(e -> {
-            StorylineScene storylineScene = new StorylineScene(primaryStage);
-            primaryStage.setScene(storylineScene.getScene());
+            StorylineScene newStorylineScene = new StorylineScene(primaryStage);
+            primaryStage.setScene(newStorylineScene.getScene());
         });
 
-        endBox.getChildren().addAll(endLabel, pointsLabel, backButton);
+        buttonBox.getChildren().addAll(continueButton, backButton);
+        endBox.getChildren().addAll(endLabel, pointsLabel, buttonBox);
         dialogContainer.getChildren().add(endBox);
+    }
+
+    private void showLoadingScreen() {
+        StackPane loadingPane = new StackPane();
+        loadingPane.setStyle("-fx-background-color: " + PINK_BG + ";");
+
+        VBox loadingContent = new VBox(20);
+        loadingContent.setAlignment(Pos.CENTER_LEFT);
+
+        Label loadingLabel = new Label("Loading Chapter 2...");
+        loadingLabel.setStyle("-fx-font-size: 32px; " +
+                "-fx-text-fill: " + TEXT_COLOR + "; " +
+                "-fx-font-family: 'Arial Rounded MT Bold';");
+
+        ProgressIndicator progress = new ProgressIndicator();
+        progress.setStyle("-fx-progress-color: " + DARK_PINK + ";");
+        progress.setPrefSize(100, 100);
+
+        loadingContent.getChildren().addAll(loadingLabel, progress);
+        loadingPane.getChildren().add(loadingContent);
+
+        root.setCenter(loadingPane);
+
+        // Simulate loading with a timeline
+        Timeline loadingTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(2), e -> {
+                    // Transition to Chapter 2
+                    Chapter2Scene chapter2 = new Chapter2Scene(primaryStage);
+                    primaryStage.setScene(chapter2.getScene());
+                })
+        );
+        loadingTimeline.play();
     }
 
     public Scene getScene() {
