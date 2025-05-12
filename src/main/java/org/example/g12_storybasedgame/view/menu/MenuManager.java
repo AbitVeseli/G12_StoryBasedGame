@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.g12_storybasedgame.model.User;
+import org.example.g12_storybasedgame.model.UserFileManager;
 import org.example.g12_storybasedgame.view.homescreen.Homescreen;
 
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.HashMap;
 public class MenuManager extends Application {
     private Stage primaryStage;
     private StackPane rootContainer;
-    private HashMap<String, User> users = new HashMap<>();
+    private HashMap<String, User> users = UserFileManager.laddaAnvändare();
     private Scene mainScene;
 
     @Override
@@ -390,9 +391,12 @@ public class MenuManager extends Application {
         if (users.containsKey(username)) {
             return false;
         }
+
         users.put(username, new User(username, password));
+        UserFileManager.sparaAnvändare(username, password);
         return true;
     }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
