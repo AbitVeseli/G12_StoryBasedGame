@@ -30,6 +30,7 @@ public class Chapter1Scene {
     private Queue<String[]> messageQueue = new LinkedList<>();
     private boolean isAnimating = false;
     private int currentSection = 0;
+    private String[] currentMessage;
 
     // Pink color scheme
     private final String PINK_BG = "-fx-background-color: #FFD6E0;";
@@ -124,10 +125,7 @@ public class Chapter1Scene {
                 new String[]{"Textbox", "You suddenly wake up from sleep because you hear someone calling for you and see a golden bird."},
                 new String[]{"Nugari", "Abita wake up!! You're going to be late to school!!"},
                 new String[]{"Abita", "Ugh, Nugari you're being too loud. Give me 5 more minutes..."},
-
-                new String[]{"Abita (Inner monologue)", "Wow, the weather's so nice today..."},
-                new String[]{"Abita (Inner monologue)", "A nice breeze and the sun is out, I have a good feeling about today."},
-                new String[]{"Abita (Inner monologue)", "I should go look for Mara!"},
+                new String[]{"Abita (Inner monologue)", "Wow, the weather's so nice today, a nice breeze and the sun is out, I have a good feeling about today. I should go look for Mara!"},
                 new String[]{" ", "*BAM/CRASH*"},
                 new String[]{"???", "Huff, are your eyes only for decoration? Watch where you're going!"}
         ));
@@ -155,38 +153,46 @@ public class Chapter1Scene {
         switch(choice) {
             case 1 -> {
                 relationshipPoints += 1;
+                messageQueue.add(new String[]{"Abita", "I’m sorry, I didn’t mean to bump into you."});
                 messageQueue.add(new String[]{"???", "Watch where you're going!"});
             }
             case 2 -> {
                 relationshipPoints -= 1;
+                messageQueue.add(new String[]{"", "You continue walking..."});
                 messageQueue.add(new String[]{"???", "HEY!!"});
             }
             case 3 -> {
                 relationshipPoints -= 2;
-                messageQueue.add(new String[]{"???", "(Stunned silent)"});
+                messageQueue.add(new String[]{"Abita", "I was here the whole time, are your eyes only for decoration?"});
+                messageQueue.add(new String[]{"???", "You walk away."});
+                messageQueue.add(new String[]{"???", "Wha..."});
             }
         }
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita", "Black coily hair, undone tie, rude attitude..."},
-                new String[]{"Abita", "It's definitely Judas Blackthorne."},
-                new String[]{"Abita", "Ugh to bump into him of all people today."},
-                new String[]{"Abita", "This totally ruins my mood."},
+                new String[]{"", "As you walk away from the encounter you look after the student who you just bumped into."},
+
+                new String[]{"Abita", "Black colly hair, undone tie, rude attitude. It's definitely <b>Judas Blackthorne</b>."},
+                new String[]{"Abita", "Black colly hair, undone tie, rude attitude. It's definitely *Judas Blackthorne*."},
+                new String[]{"Abita", "Black colly hair, undone tie, rude attitude. It's definitely **Judas Blackthorne**."},
+
+                new String[]{"Abita", "Ugh to bump into him of all people today. This totally ruins my mood."},
                 new String[]{"Abita", "Now where the heck is Mara?!"},
-                new String[]{"Textbox", "In a bad mood you enter the classroom..."},
-                new String[]{"Textbox", "You hear the chatter from your classmates..."},
-                new String[]{"Textbox", "You see a group surrounding Dylan T. Ravenwood."},
-                new String[]{"Textbox", "Dylan is popular and comes from noble ancestry."},
-                new String[]{"Textbox", "You pay him no mind and sit next to Emilio Valmont."},
-                new String[]{"Textbox", "You've sat together since your first day at school."},
-                new String[]{"Abita", "Why are there so many people here today?"},
-                new String[]{"Abita", "Let's find a place to sit first..."},
-                new String[]{"Fangirl 1", "Hahahh Dylan you're so funny"},
+                new String[]{"", "In a bad mood you enter the classroom and hear the chatter from your fellow classmates."},
+                new String[]{"", "*Chatter* *Chatter*"},
+
+                new String[]{"Abita (Inner monologue)", "Why are there so many people here today? Let's find a place to sit first."},
+                new String[]{"", "You see a group of people surround Dylan T. Ravenwood."},
+                new String[]{"", "Dylan is a popular kid and comes from a noble ancestry, admired by all. "},
+                new String[]{"", "From a distance you hear their conversations."},
+
+                new String[]{"Fangirl 1", "Hahahh Dylan you're so funny!"},
                 new String[]{"Fanboy 1", "Of course he is. He's the best at everything!"},
-                new String[]{"Dylan", "Now now guys, I'm flattered, but I'm not that special."},
-                new String[]{"Fans", "NO! Your looks, your brains your FAMILY. You're superior!"},
-                new String[]{"Abita", "I feel eyes in the back of my head..."},
-                new String[]{"Textbox", "(Dylan is looking at you)"}
+                new String[]{"Dylan", "Now, now guys, I'm flattered, but I'm not that special."},
+                new String[]{"Both fans in unsion", "NO! Your looks, your brains, your FAMILY. You're superior in every way!!"},
+                new String[]{"Abita (Inner monologue)", "I feel eyes looking at me in the back of my head."},
+                new String[]{"", "You turn around."},
+                new String[]{"Abita (Inner monologue)", "Why is Dylan T. Ravenwood looking at me?"}
         ));
 
         // Restore dialog UI
@@ -212,21 +218,26 @@ public class Chapter1Scene {
 
     private void showNextMessage() {
         if (messageQueue.isEmpty()) {
+            showCurrentChoices();
             return;
         }
 
-        String[] message = messageQueue.poll();
-        animateText(message[0], message[1]);
+        currentMessage = messageQueue.poll();
+        animateText(currentMessage[0], currentMessage[1]);
 
         // Show character image based on speaker
-        if (!message[0].equals("Textbox")) {
-            showCharacterImage(message[0].toLowerCase() + ".png");
+        if (!currentMessage[0].equals("Textbox") && !currentMessage[0].equals(" ")) {
+            showCharacterImage(currentMessage[0].toLowerCase().replace(" (inner monologue)", "") + ".png");
         } else {
             hideCharacterImage();
         }
     }
 
     private void animateText(String speaker, String text) {
+        if (textAnimation != null) {
+            textAnimation.stop();
+        }
+
         isAnimating = true;
         speakerLabel.setText(speaker);
         dialogText.setText("");
@@ -247,19 +258,12 @@ public class Chapter1Scene {
 
     private void handleContinue() {
         if (isAnimating) {
+            // Skip animation and show full text
             textAnimation.stop();
+            dialogText.setText(currentMessage[1]);
             isAnimating = false;
-            if (!messageQueue.isEmpty()) {
-                String[] nextMsg = messageQueue.peek();
-                dialogText.setText(nextMsg[1]);
-                speakerLabel.setText(nextMsg[0]);
-            }
         } else {
-            if (messageQueue.isEmpty()) {
-                showCurrentChoices();
-            } else {
-                showNextMessage();
-            }
+            showNextMessage();
         }
     }
 
@@ -273,8 +277,7 @@ public class Chapter1Scene {
     }
 
     private void showChoiceButtons(String[]... options) {
-        // Change VBox to HBox for horizontal layout
-        HBox choicesBox = new HBox(15); // 15 is the spacing between buttons
+        VBox choicesBox = new VBox(15);
         choicesBox.setAlignment(Pos.CENTER);
         choicesBox.setStyle("-fx-background-color: rgba(255,255,255,0.8); " +
                 "-fx-background-radius: 10; " +
@@ -285,9 +288,8 @@ public class Chapter1Scene {
                 "-fx-text-fill: " + TEXT_COLOR + "; " +
                 "-fx-font-family: 'Arial Rounded MT Bold';");
 
-        // Create a VBox to hold the prompt above the horizontal buttons
-        VBox container = new VBox(15, promptLabel, choicesBox);
-        container.setAlignment(Pos.CENTER);
+        HBox buttonRow = new HBox(15);
+        buttonRow.setAlignment(Pos.CENTER);
 
         for (String[] option : options) {
             Button btn = new Button(option[1]);
@@ -323,10 +325,11 @@ public class Chapter1Scene {
                     "-fx-border-radius: 20; " +
                     "-fx-background-radius: 20;"));
 
-            choicesBox.getChildren().add(btn);
+            buttonRow.getChildren().add(btn);
         }
 
-        dialogContainer.getChildren().add(container);
+        choicesBox.getChildren().addAll(promptLabel, buttonRow);
+        dialogContainer.getChildren().add(choicesBox);
     }
 
     private void handleChoice(int choice) {
@@ -343,9 +346,9 @@ public class Chapter1Scene {
 
         dialogContainer.getChildren().clear();
         showChoiceButtons(
-                new String[]{"Option 1", "Look and wave (-1 relationship)"},
-                new String[]{"Option 2", "Look and furrow your brows (+1 relationship)"},
-                new String[]{"Option 3", "Don't look back (-3 relationship)"}
+                new String[]{"Option 1", "Look and wave"},
+                new String[]{"Option 2", "Look and furrow your brows"},
+                new String[]{"Option 3", "Don't look back"}
         );
     }
 
@@ -371,10 +374,11 @@ public class Chapter1Scene {
         }
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita", "Ugh, that was so uncomfortable. Let's find a familiar face instead. Oh! it's Emilio!"},
+                new String[]{"Abita (Inner monologue)", "Ugh, that was so uncomfortable. Let's find a familiar face instead. Oh! It's Emilio!"},
+                new String[]{"", "You sit down next to Emilio Valmont. You've sat next to him since your first day at school and you share a comfortable and friendly bond with him despite his scary demeanor."},
                 new String[]{"Abita", "Valmont, have you heard from Mara?"},
                 new String[]{"Emilio", "Hey Abita, lovely to see you too, how are you?"},
-                new String[]{"Abita", "Ha Ha Ha, I'm great how are you? No but for real, I haven't been able to get in touch with her since yesterday."},
+                new String[]{"Abita", "Ha ha ha, I'm great, how are you? No but for real, I haven't been able to get in touch with her since yesterday."},
                 new String[]{"Emilio", "Hmm, don't worry about it! You know Mara, she's always late to class, she'll be here a second before the doors close!"}
         ));
 
@@ -389,9 +393,9 @@ public class Chapter1Scene {
 
         dialogContainer.getChildren().clear();
         showChoiceButtons(
-                new String[]{"Option 1", "Nod and agree with him (+1 relationship)"},
-                new String[]{"Option 2", "Reluctantly agree (-1 relationship)"},
-                new String[]{"Option 3", "Disagree with him (+0 relationship)"}
+                new String[]{"Option 1", "Nod and agree with him"},
+                new String[]{"Option 2", "Reluctantly agree"},
+                new String[]{"Option 3", "Disagree with him"}
         );
     }
 
@@ -417,8 +421,19 @@ public class Chapter1Scene {
 
         messageQueue.addAll(Arrays.asList(
                 new String[]{"Emilio", "We're about to find out."},
-                new String[]{"Textbox", "The conversations calm down as the headmistress enters and heads toward the podium..."},
-                new String[]{"Textbox", "The room goes silent as the teacher announces that a fellow student from your class has been murdered."}
+                new String[]{"Abita (Inner monologue)", "Mara where the hell are you?"},
+                new String[]{"", "The conversations calm down as the headmistress enters and heads toward the podium."},
+                new String[]{" ", "*Click* *Clack* *Click* *Clack* *Click* *Clack*"},
+                new String[]{"", "Her shoes can be heard loudly."},
+                new String[]{"", "Classroom continues to bustle with noise."},
+                new String[]{"Headmistress", "SILENCE."},
+                new String[]{"", "The whole classroom goes silent."},
+                new String[]{"Headmistress", "My beloved students. My name is Sabrina Wharner and I am your headmistress in case some of you've missed that."},
+                new String[]{"Headmistress", "I am here today to deliver some unfortunate news. It saddens me as a teacher and fellow human to see a student of ours leave this world so early."},
+                new String[]{"Headmistress", "On our school premises no less. All of your lessons for today are cancelled. Let's hold a silent moment for the deceased."},
+                new String[]{"", "The classroom is eerily silent as the headmistress puts her hand on her chest and lowers her head in silent prayer."},
+                new String[]{"", "The classroom follows suit and before long the whole classroom starts being emptied out of students."},
+                new String[]{"Abita", "Where the hell is Mara."}
         ));
 
         dialogContainer.getChildren().clear();
