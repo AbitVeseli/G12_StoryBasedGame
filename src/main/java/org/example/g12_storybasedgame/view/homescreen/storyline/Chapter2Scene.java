@@ -52,7 +52,7 @@ public class Chapter2Scene {
 
         characterImageView = new ImageView();
         characterImageView.setFitWidth(350);
-        characterImageView.setFitHeight(500);
+        characterImageView.setFitHeight(300);
         characterImageView.setPreserveRatio(true);
         characterImageView.setVisible(false);
 
