@@ -50,7 +50,7 @@ public class StorylineScene {
         // Background image
         try {
             BackgroundImage bgImage = new BackgroundImage(
-                    new Image(getClass().getResourceAsStream("/MAPCHAPTER.jpeg")),
+                    new Image(getClass().getResourceAsStream("/MAPCHAPTER.jpg")),
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundPosition.CENTER,

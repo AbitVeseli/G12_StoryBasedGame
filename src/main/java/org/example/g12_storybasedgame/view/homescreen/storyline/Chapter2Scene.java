@@ -560,7 +560,7 @@ public class Chapter2Scene {
         loadingPane.setStyle("-fx-background-color: " + PINK_BG + ";");
 
         VBox loadingContent = new VBox(20);
-        loadingContent.setAlignment(Pos.CENTER);
+        loadingContent.setAlignment(Pos.CENTER_LEFT);
 
         Label loadingLabel = new Label("Loading Chapter 3...");
         loadingLabel.setStyle("-fx-font-size: 32px; " +
@@ -580,18 +580,6 @@ public class Chapter2Scene {
                 new KeyFrame(Duration.seconds(2), e -> {
                     loadingLabel.setText("Chapter 3 is not implemented yet");
                     progress.setVisible(false);
-
-                    Button backBtn = new Button("Return to Storyline Map");
-                    backBtn.setStyle("-fx-font-size: 18px; " +
-                            "-fx-text-fill: white; " +
-                            "-fx-background-color: " + DARK_PINK + "; " +
-                            "-fx-padding: 10 20; " +
-                            "-fx-background-radius: 20;");
-                    backBtn.setOnAction(event -> {
-                        StorylineScene storylineScene = new StorylineScene(primaryStage);
-                        primaryStage.setScene(storylineScene.getScene());
-                    });
-                    loadingContent.getChildren().add(backBtn);
                 })
         );
         loadingTimeline.play();
