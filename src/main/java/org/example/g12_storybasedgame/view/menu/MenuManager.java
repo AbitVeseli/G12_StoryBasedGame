@@ -36,7 +36,7 @@ public class MenuManager extends Application {
 
         primaryStage.setScene(mainScene);
         primaryStage.setTitle("Otome Adventure");
-        primaryStage.setFullScreen(false); // false är endast för testning annars true
+        primaryStage.setFullScreen(true); // false är endast för testning annars true
         primaryStage.setFullScreenExitHint("");
 
         showStartScreen();

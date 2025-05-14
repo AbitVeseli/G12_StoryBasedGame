@@ -218,6 +218,7 @@ public class Homescreen extends Application {
 
         // Scene and stage
         Scene scene = new Scene(root, 1024, 619);
+        primaryStage.setResizable(true);          // låt användaren ändra storlek
 
         primaryStage.setTitle("Otome Game - Home");
         primaryStage.setScene(scene);

@@ -40,7 +40,7 @@ public class Chapter1Scene {
     public Chapter1Scene(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.root = new BorderPane();
-        setupUI();
+        setupUI(primaryStage);
         this.scene = new Scene(root, 1024, 768);
         loadOpeningMessages();
         showNextMessage();
@@ -48,14 +48,14 @@ public class Chapter1Scene {
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> handleContinue());
     }
 
-    private void setupUI() {
+    private void setupUI(Stage primaryStage) {
         // 1. Background with pink gradient
         root.setStyle(PINK_BG + " -fx-background-radius: 10;");
 
         // Character image container (left side)
         characterImageView = new ImageView();
-        characterImageView.setFitWidth(350);
-        characterImageView.setFitHeight(500);
+        characterImageView.setFitWidth(350); // Du kan göra denna dynamisk också om det behövs
+        characterImageView.setFitHeight(300);
         characterImageView.setPreserveRatio(true);
         characterImageView.setVisible(false);
 
@@ -71,7 +71,7 @@ public class Chapter1Scene {
         dialogContainer.setSpacing(5);
         dialogContainer.setStyle("-fx-background-color: transparent;");
 
-        // Textbox header with pink styling
+        // Textbox header
         HBox textboxHeader = new HBox();
         textboxHeader.setAlignment(Pos.CENTER_LEFT);
         textboxHeader.setStyle("-fx-background-color: " + DARK_PINK + "; " +
@@ -84,7 +84,7 @@ public class Chapter1Scene {
                 "-fx-font-family: 'Arial Rounded MT Bold';");
         textboxHeader.getChildren().add(speakerLabel);
 
-        // Textbox content with pink styling
+        // Textbox content – nu med dynamisk storlek
         dialogText = new TextArea();
         dialogText.setEditable(false);
         dialogText.setWrapText(true);
@@ -97,13 +97,22 @@ public class Chapter1Scene {
                 "-fx-border-radius: 0 0 10 10; " +
                 "-fx-background-radius: 0 0 10 10; " +
                 "-fx-control-inner-background: transparent;");
-        dialogText.setPrefSize(900, 180);
         dialogText.setPadding(new Insets(15));
+        // TA BORT fasta storlekar:
+        // dialogText.setPrefSize(900, 180);
+
+        // Gör så att textfältet blir 25% av scenens höjd
+        primaryStage.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                dialogText.prefWidthProperty().bind(newScene.widthProperty().subtract(80)); // minus padding
+                dialogText.prefHeightProperty().bind(newScene.heightProperty().multiply(0.25)); // 25% av höjden
+            }
+        });
 
         dialogContainer.getChildren().addAll(textboxHeader, dialogText);
         root.setBottom(dialogContainer);
 
-        // Add relationship points display at top
+        // Top bar med relation
         Label pointsLabel = new Label("Relationship Points: " + relationshipPoints);
         pointsLabel.setStyle("-fx-font-size: 16px; " +
                 "-fx-text-fill: " + TEXT_COLOR + "; " +
@@ -115,6 +124,7 @@ public class Chapter1Scene {
                 "-fx-background-radius: 0 0 10 10;");
         root.setTop(topBar);
     }
+
 
     private void loadOpeningMessages() {
         messageQueue.clear();
