@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.g12_storybasedgame/org.example.g12_storybasedgame.view.menu.HelloApplication
+                            <mainClass>org.example.g12_storybasedgame/org.example.g12_storybasedgame.view.menu.MenuManager
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

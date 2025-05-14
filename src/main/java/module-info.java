@@ -9,4 +9,7 @@ module org.example.g12_storybasedgame {
 
     // Öppna paket för FXML (om du använder det)
     opens org.example.g12_storybasedgame.view.menu to javafx.fxml;
+    exports org.example.g12_storybasedgame.view.components;
+    exports org.example.g12_storybasedgame.view.homescreen;
+    opens org.example.g12_storybasedgame.view.homescreen to javafx.fxml;
 }

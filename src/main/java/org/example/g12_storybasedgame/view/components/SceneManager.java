@@ -1,4 +1,4 @@
-package org.example.g12_storybasedgame.model;
+package org.example.g12_storybasedgame.view.components;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
