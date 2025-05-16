@@ -13,20 +13,34 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.g12_storybasedgame.model.User;
 import org.example.g12_storybasedgame.model.UserFileManager;
 import org.example.g12_storybasedgame.view.homescreen.Homescreen;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Properties;
+
+
 
 public class MenuManager extends Application {
     private Stage primaryStage;
     private StackPane rootContainer;
     private HashMap<String, User> users = UserFileManager.laddaAnvändare();
     private Scene mainScene;
+    private boolean isFullscreen = true;
+    private double volume = 1.0; // 0.0 to 1.0
+    private double textSpeed = 1.0; // 0.5 (slow) to 2.0 (fast)
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -34,9 +48,14 @@ public class MenuManager extends Application {
         this.rootContainer = new StackPane();
         this.mainScene = new Scene(rootContainer);
 
+        // Load settings first
+        loadSettings();
+
+        // Apply loaded settings
+        primaryStage.setFullScreen(isFullscreen);
+
         primaryStage.setScene(mainScene);
         primaryStage.setTitle("Otome Adventure");
-        primaryStage.setFullScreen(true); // false är endast för testning annars true
         primaryStage.setFullScreenExitHint("");
 
         showStartScreen();
@@ -235,17 +254,156 @@ public class MenuManager extends Application {
             }
         });
 
-        settingsButton.setOnAction(e -> {
-            showAlert("Error", "This has not yet been implemented!");
-
-        });
+        settingsButton.setOnAction(e -> showSettingsPopUp());
 
         registerButton.setOnAction(e -> showRegisterScreen());
     }
 
-    // ===== SETTINGS =====
+    // ===== SETTINGS POPUP =====
     public void showSettingsPopUp() {
+        // Create a new stage for the settings window
+        Stage settingsStage = new Stage();
+        settingsStage.setTitle("Game Settings");
+        settingsStage.initModality(Modality.APPLICATION_MODAL);
+        settingsStage.initOwner(primaryStage);
 
+        // Main container with styling that matches your game's aesthetic
+        VBox settingsLayout = new VBox(20);
+        settingsLayout.setPadding(new Insets(20, 30, 20, 30));
+        settingsLayout.setAlignment(Pos.CENTER);
+        settingsLayout.setStyle("-fx-background-color: rgba(94, 21, 25, 0.9); -fx-background-radius: 10;");
+
+        // Title
+        Label title = new Label("GAME SETTINGS");
+        title.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
+
+        // Fullscreen toggle
+        HBox fullscreenBox = new HBox(10);
+        fullscreenBox.setAlignment(Pos.CENTER_LEFT);
+        Label fullscreenLabel = new Label("Fullscreen Mode:");
+        fullscreenLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+        CheckBox fullscreenCheckbox = new CheckBox();
+        fullscreenCheckbox.setSelected(isFullscreen);
+        fullscreenCheckbox.setStyle("-fx-text-fill: white;");
+        fullscreenBox.getChildren().addAll(fullscreenLabel, fullscreenCheckbox);
+
+        // Volume control
+        VBox volumeBox = new VBox(5);
+        Label volumeLabel = new Label("Volume:");
+        volumeLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+        Slider volumeSlider = new Slider(0, 1, volume);
+        volumeSlider.setMajorTickUnit(0.25);
+        volumeSlider.setShowTickLabels(true);
+        volumeSlider.setStyle("-fx-control-inner-background: #5e1519;");
+        volumeBox.getChildren().addAll(volumeLabel, volumeSlider);
+
+        // Text speed control
+        VBox speedBox = new VBox(5);
+        Label speedLabel = new Label("Text Speed:");
+        speedLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+        Slider speedSlider = new Slider(0.5, 2.0, textSpeed);
+        speedSlider.setMajorTickUnit(0.5);
+        speedSlider.setShowTickLabels(true);
+        speedSlider.setStyle("-fx-control-inner-background: #5e1519;");
+        speedBox.getChildren().addAll(speedLabel, speedSlider);
+
+        // Button container
+        HBox buttonBox = new HBox(20);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        // Save button
+        Button saveButton = new Button("SAVE");
+        saveButton.setStyle("-fx-background-color: #3a1013; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;");
+
+        // Cancel button
+        Button cancelButton = new Button("CANCEL");
+        cancelButton.setStyle("-fx-background-color: #3a1013; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;");
+
+        buttonBox.getChildren().addAll(saveButton, cancelButton);
+
+        // Add all components to main layout
+        settingsLayout.getChildren().addAll(
+                title,
+                fullscreenBox,
+                volumeBox,
+                speedBox,
+                buttonBox
+        );
+
+        // Event handlers
+        saveButton.setOnAction(e -> {
+            // Update current settings
+            isFullscreen = fullscreenCheckbox.isSelected();
+            volume = volumeSlider.getValue();
+            textSpeed = speedSlider.getValue();
+
+            // Apply changes immediately
+            primaryStage.setFullScreen(isFullscreen);
+            // Note: You'll need to implement audio system volume control separately
+
+            // Save settings to file
+            saveSettings();
+
+            settingsStage.close();
+        });
+
+        cancelButton.setOnAction(e -> {
+            settingsStage.close();
+        });
+
+        // Set hover effects for buttons
+        saveButton.setOnMouseEntered(e -> saveButton.setStyle("-fx-background-color: #5e1519; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;"));
+        saveButton.setOnMouseExited(e -> saveButton.setStyle("-fx-background-color: #3a1013; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;"));
+        cancelButton.setOnMouseEntered(e -> cancelButton.setStyle("-fx-background-color: #5e1519; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;"));
+        cancelButton.setOnMouseExited(e -> cancelButton.setStyle("-fx-background-color: #3a1013; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;"));
+
+        // Create and show the scene
+        Scene settingsScene = new Scene(settingsLayout, 400, 350);
+        settingsStage.setScene(settingsScene);
+        settingsStage.setResizable(false);
+        settingsStage.showAndWait();
+    }
+
+    private void saveSettings() {
+        try {
+            Properties props = new Properties();
+            props.setProperty("fullscreen", String.valueOf(isFullscreen));
+            props.setProperty("volume", String.valueOf(volume));
+            props.setProperty("textSpeed", String.valueOf(textSpeed));
+
+            // Use java.nio.file.Paths directly
+            java.nio.file.Path settingsPath = Paths.get(
+                    System.getProperty("user.home"),
+                    "otome_adventure_settings.properties"
+            );
+
+            try (OutputStream out = Files.newOutputStream(settingsPath)) {
+                props.store(out, "Otome Game Settings");
+            }
+        } catch (IOException e) {
+            System.err.println("Could not save settings: " + e.getMessage());
+        }
+    }
+
+    private void loadSettings() {
+        try {
+            Properties props = new Properties();
+            java.nio.file.Path settingsPath = Paths.get(
+                    System.getProperty("user.home"),
+                    "otome_adventure_settings.properties"
+            );
+
+            if (Files.exists(settingsPath)) {
+                try (InputStream in = Files.newInputStream(settingsPath)) {
+                    props.load(in);
+                    isFullscreen = Boolean.parseBoolean(props.getProperty("fullscreen", "true"));
+                    volume = Double.parseDouble(props.getProperty("volume", "1.0"));
+                    textSpeed = Double.parseDouble(props.getProperty("textSpeed", "1.0"));
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Could not load settings, using defaults: " + e.getMessage());
+        }
     }
 
 
@@ -396,7 +554,6 @@ public class MenuManager extends Application {
         UserFileManager.sparaAnvändare(username, password);
         return true;
     }
-
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
