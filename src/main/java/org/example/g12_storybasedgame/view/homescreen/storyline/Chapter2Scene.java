@@ -52,7 +52,7 @@ public class Chapter2Scene {
 
         characterImageView = new ImageView();
         characterImageView.setFitWidth(350);
-        characterImageView.setFitHeight(500);
+        characterImageView.setFitHeight(300);
         characterImageView.setPreserveRatio(true);
         characterImageView.setVisible(false);
 
@@ -93,6 +93,14 @@ public class Chapter2Scene {
                 "-fx-control-inner-background: transparent;");
         dialogText.setPrefSize(900, 180);
         dialogText.setPadding(new Insets(15));
+
+        // Gör så att textfältet blir 25% av scenens höjd
+        primaryStage.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                dialogText.prefWidthProperty().bind(newScene.widthProperty().subtract(80)); // minus padding
+                dialogText.prefHeightProperty().bind(newScene.heightProperty().multiply(0.15)); // 25% av höjden
+            }
+        });
 
         dialogContainer.getChildren().addAll(textboxHeader, dialogText);
         root.setBottom(dialogContainer);
@@ -221,7 +229,7 @@ public class Chapter2Scene {
     private void loadEmilioResponse(int choice) {
         showCharacterImage("emilio.png");
         messageQueue.clear();
-        currentSection = 5; // Changed to 5 to lead to dream sequence
+        //currentSection = 5; // Changed to 5 to lead to dream sequence
 
         switch(choice) {
             case 1 -> {
@@ -306,6 +314,7 @@ public class Chapter2Scene {
         );
     }
 
+
     private void handleFinalChoice(int choice) {
         switch(choice) {
             case 1 -> {
@@ -386,25 +395,36 @@ public class Chapter2Scene {
             return;
         }
 
-        if (messageQueue.isEmpty()) {
-            switch(currentSection) {
-                case 4: // After Emilio response
-                    currentSection = 5;
-                    loadDreamSequence();
-                    break;
-                case 5: // After dream sequence
-                    currentSection = 6;
-                    loadFinalResponse();
-                    break;
-                case 6: // After final response
-                    currentSection = 7;
-                    loadFinalChoices();
-                    break;
-                default:
-                    showCurrentChoices();
-            }
-        } else {
+        if (!messageQueue.isEmpty()) {
             showNextMessage();
+            return;
+        }
+
+        switch(currentSection) {
+            case 1:
+                loadInitialChoices();
+                break;
+            case 2: // Handled by handleChoice()
+                break;
+            case 3:
+                loadEmilioChoices();
+                break;
+            case 4:
+                loadDreamSequence(); // First load the dream sequence messages
+                break;
+            case 5:
+                // After dream sequence messages finish, move to final response
+                currentSection = 6;
+                loadFinalResponse();
+                break;
+            case 6:
+                loadFinalChoices();
+                break;
+            case 7:
+                showEndScreen();
+                break;
+            default:
+                showCurrentChoices();
         }
     }
 

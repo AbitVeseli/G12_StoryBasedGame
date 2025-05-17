@@ -6,6 +6,6 @@ import org.example.g12_storybasedgame.view.menu.MenuManager;
 
 public class Main {
     public static void main(String[] args) {
-        Application.launch(MenuManager.class, args); // Starta via MenuManager
+        Application.launch(Homescreen.class, args); // Starta via MenuManager
     }
 }
