@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.image.*;
 import javafx.scene.control.*;
@@ -47,6 +48,12 @@ public class Chapter1Scene {
         showNextMessage();
 
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> handleContinue());
+//        scene.setOnKeyPressed(e -> {
+//            if (e.getCode() == KeyCode.SPACE) {
+//                handleContinue();
+//            }
+//        });
+
     }
 
     private void setupUI(Stage primaryStage) {
@@ -130,7 +137,7 @@ public class Chapter1Scene {
         currentSection = 1;
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Textbox", "You suddenly wake up from sleep because you hear someone calling for you and see a golden bird."},
+                new String[]{"", "You suddenly wake up from sleep because you hear someone calling for you and see a golden bird."},
                 new String[]{"Nugari", "Abita wake up!! You're going to be late to school!!"},
                 new String[]{"Abita", "Ugh, Nugari you're being too loud. Give me 5 more minutes..."},
                 new String[]{"Abita (Inner monologue)", "Wow, the weather's so nice today, a nice breeze and the sun is out, I have a good feeling about today. I should go look for Mara!"},

@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.image.*;
 import javafx.scene.control.*;
@@ -45,6 +46,11 @@ public class Chapter2Scene {
         showNextMessage();
 
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> handleContinue());
+//        scene.setOnKeyPressed(e -> {
+//            if (e.getCode() == KeyCode.SPACE) {
+//                handleContinue();
+//            }
+//        });
     }
 
     private void setupUI() {
@@ -598,8 +604,8 @@ public class Chapter2Scene {
 
         Timeline loadingTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), e -> {
-                    loadingLabel.setText("Chapter 3 is not implemented yet");
-                    progress.setVisible(false);
+                    Chapter3Scene chapter3 = new Chapter3Scene(primaryStage);
+                    primaryStage.setScene(chapter3.getScene());
                 })
         );
         loadingTimeline.play();
