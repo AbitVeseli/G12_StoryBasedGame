@@ -14,6 +14,7 @@ import javafx.scene.shape.Line;
 import javafx.geometry.Point2D;
 import org.example.g12_storybasedgame.view.homescreen.Homescreen;
 
+import java.io.InputStream;
 import java.util.*;
 
 public class StorylineScene {
@@ -41,25 +42,30 @@ public class StorylineScene {
     private void initializeUnlockedChapters() {
         unlockedChapters.put(1, true); // Chapter 1 always unlocked
         unlockedChapters.put(2, true); //ta bort sen och byt loopen från 3 till 2
-        for (int i = 3; i <= 6; i++) {
+        unlockedChapters.put(3, true);
+        for (int i = 4; i <= 6; i++) {
             unlockedChapters.put(i, false);
         }
     }
 
     private void setupUI() {
         // Background image
-        try {
+        InputStream imageStream = getClass().getResourceAsStream("/MAPCHAPTER.jpg");
+        if (imageStream != null) {
             BackgroundImage bgImage = new BackgroundImage(
-                    new Image(getClass().getResourceAsStream("/MAPCHAPTER.jpg")),
+                    new Image(imageStream),
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundPosition.CENTER,
                     new BackgroundSize(100, 100, true, true, true, true));
             root.setBackground(new Background(bgImage));
-        } catch (Exception e) {
-            // Fallback to pink background if image fails to load
+            System.out.println("im dumb");
+        } else {
             root.setStyle(PINK_BG);
+            System.out.println("stop fucking printing pink");
         }
+
+
 
         // Title
         Label title = new Label("Storyline Map");
@@ -178,6 +184,11 @@ public class StorylineScene {
                 Chapter2Scene chapter2 = new Chapter2Scene(primaryStage);
                 primaryStage.setScene(chapter2.getScene());
                 break;
+            case 3:
+            Chapter3Scene chapter3 = new Chapter3Scene(primaryStage);
+            primaryStage.setScene(chapter3.getScene());
+            break;
+
             default:
                 // Show coming soon message
                 StackPane messagePane = new StackPane();

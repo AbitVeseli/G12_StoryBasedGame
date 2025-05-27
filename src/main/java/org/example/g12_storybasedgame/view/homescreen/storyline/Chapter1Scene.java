@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.image.*;
 import javafx.scene.control.*;
@@ -47,6 +48,12 @@ public class Chapter1Scene {
         showNextMessage();
 
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> handleContinue());
+//        scene.setOnKeyPressed(e -> {
+//            if (e.getCode() == KeyCode.SPACE) {
+//                handleContinue();
+//            }
+//        });
+
     }
 
     private void setupUI(Stage primaryStage) {
@@ -99,14 +106,13 @@ public class Chapter1Scene {
                 "-fx-background-radius: 0 0 10 10; " +
                 "-fx-control-inner-background: transparent;");
         dialogText.setPadding(new Insets(15));
-        // TA BORT fasta storlekar:
-        // dialogText.setPrefSize(900, 180);
+
 
         // Gör så att textfältet blir 25% av scenens höjd
         primaryStage.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 dialogText.prefWidthProperty().bind(newScene.widthProperty().subtract(80)); // minus padding
-                dialogText.prefHeightProperty().bind(newScene.heightProperty().multiply(0.25)); // 25% av höjden
+                dialogText.prefHeightProperty().bind(newScene.heightProperty().multiply(0.15)); // 25% av höjden
             }
         });
 
@@ -126,13 +132,12 @@ public class Chapter1Scene {
         root.setTop(topBar);
     }
 
-
     private void loadOpeningMessages() {
         messageQueue.clear();
         currentSection = 1;
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Textbox", "You suddenly wake up from sleep because you hear someone calling for you and see a golden bird."},
+                new String[]{"", "You suddenly wake up from sleep because you hear someone calling for you and see a golden bird."},
                 new String[]{"Nugari", "Abita wake up!! You're going to be late to school!!"},
                 new String[]{"Abita", "Ugh, Nugari you're being too loud. Give me 5 more minutes..."},
                 new String[]{"Abita (Inner monologue)", "Wow, the weather's so nice today, a nice breeze and the sun is out, I have a good feeling about today. I should go look for Mara!"},
@@ -174,7 +179,7 @@ public class Chapter1Scene {
             case 3 -> {
                 relationshipPoints -= 2;
                 messageQueue.add(new String[]{"Abita", "I was here the whole time, are your eyes only for decoration?"});
-                messageQueue.add(new String[]{"???", "You walk away."});
+                messageQueue.add(new String[]{"", "You walk away."});
                 messageQueue.add(new String[]{"???", "Wha..."});
             }
         }
@@ -182,9 +187,7 @@ public class Chapter1Scene {
         messageQueue.addAll(Arrays.asList(
                 new String[]{"", "As you walk away from the encounter you look after the student who you just bumped into."},
 
-                new String[]{"Abita", "Black colly hair, undone tie, rude attitude. It's definitely <b>Judas Blackthorne</b>."},
                 new String[]{"Abita", "Black colly hair, undone tie, rude attitude. It's definitely *Judas Blackthorne*."},
-                new String[]{"Abita", "Black colly hair, undone tie, rude attitude. It's definitely **Judas Blackthorne**."},
 
                 new String[]{"Abita", "Ugh to bump into him of all people today. This totally ruins my mood."},
                 new String[]{"Abita", "Now where the heck is Mara?!"},

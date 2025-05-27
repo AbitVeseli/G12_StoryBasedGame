@@ -4,20 +4,17 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
-import javafx.scene.image.*;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.geometry.*;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import java.util.*;
-import javafx.scene.input.MouseEvent;
-import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
 
-public class Chapter2Scene {
+public class Chapter3Scene {
     private Scene scene;
     private BorderPane root;
     private Stage primaryStage;
@@ -32,12 +29,13 @@ public class Chapter2Scene {
     private int currentSection = 0;
     private String[] currentMessage;
 
+    // Pink color scheme
     private final String PINK_BG = "-fx-background-color: #FFD6E0;";
     private final String DARK_PINK = "#FF85A2";
     private final String LIGHT_PINK = "#FFC2D1";
     private final String TEXT_COLOR = "#5E2D40";
 
-    public Chapter2Scene(Stage primaryStage) {
+    public Chapter3Scene(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.root = new BorderPane();
         setupUI();
@@ -45,12 +43,7 @@ public class Chapter2Scene {
         loadOpeningMessages();
         showNextMessage();
 
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> handleContinue());
-//        scene.setOnKeyPressed(e -> {
-//            if (e.getCode() == KeyCode.SPACE) {
-//                handleContinue();
-//            }
-//        });
+        scene.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, e -> handleContinue());
     }
 
     private void setupUI() {
@@ -128,91 +121,54 @@ public class Chapter2Scene {
         currentSection = 1;
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{" ", "BZZT BZZT"},
-                new String[]{"Abita (Inner monologue)", "Come on, Mara. Pick up. Pick up. Please pick up."},
-                new String[]{" ", "You frantically tap out another message to Mara."},
-                new String[]{" ", "Text Message Sent: \"Hey! Where are you? You didn't answer yesterday and now you're not in class. Text me back, okay?\""},
-                new String[]{" ", "No reply."},
-                new String[]{"Abita (Inner monologue)", "This isn't like her. She always texts back, even if it's just an emoji. Something's wrong."},
-                new String[]{" ", "Shoes tapping rapidly on tile floor"},
-                new String[]{" ", "You slip out of the classroom before the whispers can catch up to you."},
-                new String[]{" ", "Before Emilio can even say your name, you're halfway down the corridor."},
-                new String[]{" ", "You lock eyes with:"}
+                new String[]{"", "The next day you rush to school to see whether new information has been released."},
+                new String[]{"", "Surprisingly, everyone around you appears to be unbothered by the previous day's events."},
+                new String[]{"Abita (Inner monologue)", "What the hell...? Is this a joke? Mara's gone. She died here. And everyone's just... pretending like it's a normal day?"},
+                new String[]{"", "The teacher walks in but someone else walks in after her and stops beside her."},
+                new String[]{"Teacher", "Class, attention please! We have a new transfer student joining us today. Please welcome Benny Blade Vi."},
+                new String[]{"Benny", "Yo. Nice to meet you all."},
+                new String[]{"", "Chatter erupts in the classroom and it's as if yesterday's murder didn't happen."},
+                new String[]{"Female student", "Who is that?"},
+                new String[]{"Male student", "Do you see his cool eyes?"},
+                new String[]{"Female student", "He's kinda hot… But why now?"},
+                new String[]{"Abita (Inner monologue)", "A transfer student? The day after a murder? Not even a full 24 hours have passed. That's more than suspicious…"},
+                new String[]{"", "You glance over at your classmates. Emilio is staring at the new guy, brow furrowed. Judas remains slouched in his seat, unfazed. Dylan meets your eyes and offers a smooth smirk."}
         ));
     }
 
-    private void loadInitialChoices() {
+    private void loadDylanChoices() {
         messageQueue.clear();
         currentSection = 2;
 
         dialogContainer.getChildren().clear();
         showChoiceButtons(
-                new String[]{"Option 1", "Judas"},
-                new String[]{"Option 2", "Dylan"}
+                new String[]{"Option 1", "Look away quickly"},
+                new String[]{"Option 2", "Raise an eyebrow "},
+                new String[]{"Option 3", "Stare coldly"}
         );
     }
 
-    private void loadJudasPath() {
-        showCharacterImage("judas.png");
-        messageQueue.clear();
-        currentSection = 3;
-
-        messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita (Inner monologue)", "That was so weird, why did he look at me? Anyway, I just need to check. Maybe she overslept. Maybe she's sick. Maybe she"},
-                new String[]{" ", "Your thoughts freeze mid-sentence as you run back to your dorms and up the stairs."},
-                new String[]{" ", "Yellow police tape. Uniformed officers. Investigators with gloves."},
-                new String[]{" ", "Everything slows down. A low ringing fills your ears. Someone is talking, but the words blur together."},
-                new String[]{"Officer 1", "Please step back, this area is restricted."},
-                new String[]{"Investigator", "Female student, early-twenties... Signs of struggle... Possible time of death... late last night..."},
-                new String[]{" ", "You can't breath. You can't think. You try to step forward again."},
-                new String[]{"Officer 2", "I said back up! This isn't for students."},
-                new String[]{"Abita (Inner monologue)", "This can't be real. This isn't happening."},
-                new String[]{" ", "You manage to catch a glimpse through the half-open dorm door. It's Mara's room."},
-                new String[]{" ", "Photo frames knocked over. A broken lamp. A familiar scarf on the floor."},
-                new String[]{" ", "You stumble back. The breath in your lungs feels too sharp, too cold."},
-                new String[]{"Abita (Inner monologue)", "That scarf. That's hers. That's her favorite one. She wore it the last time I saw her."},
-                new String[]{" ", "You turn around, legs trembling beneath you. Somehow, you make it back to your room."},
-                new String[]{" ", "Click. Door closes. Lock turns."},
-                new String[]{" ", "You drop your phone on the bed and sit there, unmoving."},
-                new String[]{"Abita (Inner monologue)", "She's gone. She's really gone. Why didn't I check on her yesterday? Why didn't I feel it?"},
-                new String[]{" ", "Tears slide down Abita's cheeks in silence."},
-                new String[]{"Notification sound", "Ding"},
-                new String[]{" ", "You glance at your phone."},
-                new String[]{" ", "Text from Emilio: \"Are you okay? Where are you? Did you hear what they said?\""}
-        ));
-
-        dialogContainer.getChildren().clear();
-        dialogContainer.getChildren().addAll(createTextbox());
-        showNextMessage();
-    }
-
-    private void loadDylanPath() {
+    private void loadDylanResponse(int choice) {
         showCharacterImage("dylan.png");
         messageQueue.clear();
         currentSection = 3;
 
+        switch(choice) {
+            case 1 -> relationshipPoints -= 1;
+            case 2 -> relationshipPoints += 1;
+            case 3 -> relationshipPoints += 0;
+        }
+
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita (Inner monologue)", "That was so weird, why did he look at me? Anyway, I just need to check. Maybe she overslept. Maybe she's sick. Maybe she"},
-                new String[]{" ", "Your thoughts freeze mid-sentence as you run back to your dorms and up the stairs."},
-                new String[]{" ", "Yellow police tape. Uniformed officers. Investigators with gloves."},
-                new String[]{" ", "Everything slows down. A low ringing fills your ears. Someone is talking, but the words blur together."},
-                new String[]{"Officer 1", "Please step back, this area is restricted."},
-                new String[]{"Investigator", "Female student, early-twenties... Signs of struggle... Possible time of death... late last night..."},
-                new String[]{" ", "You can't breath. You can't think. You try to step forward again."},
-                new String[]{"Officer 2", "I said back up! This isn't for students."},
-                new String[]{"Abita (Inner monologue)", "This can't be real. This isn't happening."},
-                new String[]{" ", "You manage to catch a glimpse through the half-open dorm door. It's Mara's room."},
-                new String[]{" ", "Photo frames knocked over. A broken lamp. A familiar scarf on the floor."},
-                new String[]{" ", "You stumble back. The breath in your lungs feels too sharp, too cold."},
-                new String[]{"Abita (Inner monologue)", "That scarf. That's hers. That's her favorite one. She wore it the last time I saw her."},
-                new String[]{" ", "You turn around, legs trembling beneath you. Somehow, you make it back to your room."},
-                new String[]{" ", "Click. Door closes. Lock turns."},
-                new String[]{" ", "You drop your phone on the bed and sit there, unmoving."},
-                new String[]{"Abita (Inner monologue)", "She's gone. She's really gone. Why didn't I check on her yesterday? Why didn't I feel it?"},
-                new String[]{" ", "Tears slide down Abita's cheeks in silence."},
-                new String[]{"Notification sound ", "Ding"},
-                new String[]{" ", "You glance at your phone."},
-                new String[]{" ", "Text from Emilio: \"Are you okay? Where are you? Did you hear what they said?\""}
+                new String[]{"Abita (Inner monologue)", "That look again. He's watching me like he knows something..."},
+                new String[]{"Abita (Inner monologue)", "Fine. Two can play that game."},
+                new String[]{"", "You look away from Dylan and move your attention toward Emilio."},
+                new String[]{"Abita", "Hey, Valmont."},
+                new String[]{"Emilio", "Hey. You okay? You don't look like you slept a lot."},
+                new String[]{"Abita", "I didn't. I… I had a dream. A weird one. Mara came to me in that dream."},
+                new String[]{"Emilio", "Mara…?"},
+                new String[]{"Abita", "She told me to stop looking for her killer. She looked... terrified."},
+                new String[]{"Emilio (hesitant)", "Maybe... Maybe you should listen to her."}
         ));
 
         dialogContainer.getChildren().clear();
@@ -220,73 +176,41 @@ public class Chapter2Scene {
         showNextMessage();
     }
 
-    private void loadEmilioChoices() {
+    private void loadEmilioChoices1() {
         messageQueue.clear();
         currentSection = 4;
 
         dialogContainer.getChildren().clear();
         showChoiceButtons(
-                new String[]{"Option 1", "Reply honestly"},
-                new String[]{"Option 2", "Lie"},
-                new String[]{"Option 3", "Leave him on read"}
+                new String[]{"Option 1", "Nod and agree"},
+                new String[]{"Option 2", "Reluctantly agree"}
         );
     }
 
-    private void loadEmilioResponse(int choice) {
+    private void loadEmilioResponse1(int choice) {
         showCharacterImage("emilio.png");
-        messageQueue.clear();
-        //currentSection = 5; // Changed to 5 to lead to dream sequence
-
-        switch(choice) {
-            case 1 -> {
-                relationshipPoints += 2;
-                messageQueue.add(new String[]{"Abita", "It was Mara."});
-            }
-            case 2 -> {
-                relationshipPoints -= 1;
-                messageQueue.add(new String[]{"Abita", "I'm fine."});
-            }
-            case 3 -> {
-                relationshipPoints -= 2;
-                messageQueue.add(new String[]{" ", "(You don't reply)"});
-            }
-        }
-
-        messageQueue.addAll(Arrays.asList(
-                new String[]{" ", "You curl up on the bed, clutching your pillow."},
-                new String[]{"Abita (Inner monologue)", "This isn't just a tragedy. This is personal. Someone killed Mara. And I'm going to find out who."},
-                new String[]{" ", "Scene fades to black"}
-        ));
-
-        dialogContainer.getChildren().clear();
-        dialogContainer.getChildren().addAll(createTextbox());
-        showNextMessage();
-    }
-
-    private void loadDreamSequence() {
         messageQueue.clear();
         currentSection = 5;
 
+        switch(choice) {
+            case 1 -> relationshipPoints += 1;
+            case 2 -> relationshipPoints -= 1;
+        }
+
         messageQueue.addAll(Arrays.asList(
-                new String[]{" ", "Abita sleeps restlessly in her bed. The night is heavy, air cold."},
-                new String[]{" ", "A voice calls faintly, distant but growing desperate."},
-                new String[]{"Mara", "Abi....Abit....Abita!!"},
-                new String[]{"Abita", "Huh...? That voice... Who's calling me? It feels so close, so familiar..."},
-                new String[]{"Mara", "Abita!"},
-                new String[]{" ", "Abita's eyes shoot open, before her stands Mara Rockrose, shimmering like a fading star, her expression urgent."},
-                new String[]{"Abita", "MARA!! Wh-what are you doing here?! No... This is impossible... You, you're gone..."},
-                new String[]{"Mara", "Abita, you have to listen to me and you have to listen well. It's really me, I don't have much time."},
-                new String[]{"Abita", "But-"},
-                new String[]{"Mara", "No time. You want to know who the murderer is. I know you do."},
-                new String[]{"Mara", "And knowing you... you will find them. But I'm begging you, stop now."},
-                new String[]{"Abita", "Mara... I need to avenge you! Tell me who did this!"},
-                new String[]{"Mara", "I cannot tell you. I've been cursed, trapped between worlds."},
-                new String[]{" ", "The shadows around Mara start to ripple, closing in."},
-                new String[]{"Mara", "Please... stay alive."},
-                new String[]{" ", "Mara's figure flickers and vanishes. The room is empty. Cold."},
-                new String[]{" ", "Abita wakes up gasping, drenched in sweat."},
-                new String[]{"Abita (Inner monologue)", "That wasn't just a dream... She was terrified."},
-                new String[]{"Abita (Inner monologue)", "What am I supposed to do now?"}
+                new String[]{"Abita", "But I can't just stop. She was my best friend. That dream... if it was her, then it was a warning. But also a sign. I have to know the truth."},
+                new String[]{"Teacher", "Alright class, settle down. You can talk to him later and make him feel welcome here. Let's begin the class."},
+                new String[]{"", "Suspicious of the new transfer student and filled with a need to avenge your friend you set out to uncover the mysteries surrounding her death."},
+                new String[]{"", "The investigation begins. You start gathering clues after class, try talking to potential witnesses but they don't seem to have any useful information."},
+                new String[]{"Abita (Inner monologue)", "I've asked a lot of people but something seems off about everyone lately."},
+                new String[]{"", "While investigating you find yourself in the library. You see Emilio there and decide to start talking to him."},
+                new String[]{"Abita", "Hey Emilio. You seemed nervous this morning. What's going on?"},
+                new String[]{"Emilio", "Nervous? Me? Nah, I'm just... bad with new people."},
+                new String[]{"Abita", "Are you sure that's it?"},
+                new String[]{"Emilio", "No, it's about Mara and other things.. Are still digging, aren't you?"},
+                new String[]{"Abita", "Of course I am. I know what she meant to me. And you.. You cared about her too, didn't you?"},
+                new String[]{"Emilio (lowers his voice)", "I do but I heard something the night she died. But I don't want you getting dragged deeper into this. It's dangerous."},
+                new String[]{"Abita", "But I have to know the truth of what happened to Mara."}
         ));
 
         dialogContainer.getChildren().clear();
@@ -294,14 +218,40 @@ public class Chapter2Scene {
         showNextMessage();
     }
 
-    private void loadFinalResponse() {
+    private void loadEmilioChoices2() {
         messageQueue.clear();
         currentSection = 6;
 
+        dialogContainer.getChildren().clear();
+        showChoiceButtons(
+                new String[]{"Option 1", "Gently press Emilio for more information"},
+                new String[]{"Option 2", "Get angry and accuse Emilio"}
+        );
+    }
+
+    private void loadEmilioResponse2(int choice) {
+        showCharacterImage("emilio.png");
+        messageQueue.clear();
+        currentSection = 7;
+
+        switch(choice) {
+            case 1 -> {
+                relationshipPoints += 1;
+                messageQueue.add(new String[]{"Abita", "You can trust me. If you know something, anything, I need it. For Mara."});
+            }
+            case 2 -> {
+                relationshipPoints -= 1;
+                messageQueue.add(new String[]{"Abita", "If you know something, stop dancing around it. Are you protecting them? Or yourself?"});
+            }
+        }
+
         messageQueue.addAll(Arrays.asList(
-                new String[]{" ", "It's the next morning."},
-                new String[]{" ", "The sunlight feels thinner somehow. The memory of Mara's voice lingers."},
-                new String[]{"Abita (Inner monologue)", "My head hurts... I have to make a decision..."}
+                new String[]{"Emilio", "Alright I'll tell you. I heard voices near the greenhouse. It sounded like a big argument but I didn't see who it was, so hurriedly walked away. But... one voice sounded familiar.I just don't know from where yet."},
+                new String[]{"Abita", "If you remember or see anything else promise you'll tell me."},
+                new String[]{"Emilio", "I will. Just… be careful, Abita. I'm here if you need help. Promise me that"},
+                new String[]{"", "You walk out of the library and find Benny standing alone with his hands in his pockets and gazing somewhere distant."},
+                new String[]{"Abita", "You transferred here right after someone died. That's not just a coincidence. It almost seem calculated by someone"},
+                new String[]{"Benny", "You're direct. I like that. But let me give you some advice, stop looking. This place? It's darker than it looks."}
         ));
 
         dialogContainer.getChildren().clear();
@@ -309,34 +259,143 @@ public class Chapter2Scene {
         showNextMessage();
     }
 
-    private void loadFinalChoices() {
+    private void loadBennyChoices() {
         messageQueue.clear();
-        currentSection = 7;
+        currentSection = 8;
 
         dialogContainer.getChildren().clear();
         showChoiceButtons(
-                new String[]{"Option 1", "Ignore Mara's warning"},
-                new String[]{"Option 2", "Respect Mara's wishes"}
+                new String[]{"Option 1", "Back down"},
+                new String[]{"Option 2", "Keep your stance"},
+                new String[]{"Option 3", "Get hostile"}
         );
     }
 
+    private void loadBennyResponse(int choice) {
+        showCharacterImage("benny.png");
+        messageQueue.clear();
+        currentSection = 9;
 
-    private void handleFinalChoice(int choice) {
         switch(choice) {
             case 1 -> {
-                relationshipPoints += 1; // Emilio
-                relationshipPoints += 1; // Dylan
-                relationshipPoints -= 1; // Judas
-                relationshipPoints -= 1; // Benny
+                relationshipPoints += 1;
+                messageQueue.add(new String[]{"Abita", "...Alright. I get it. I'm not trying to make things worse. But I'm still looking for answers. Just... keep an eye out for me, okay?"});
             }
             case 2 -> {
-                relationshipPoints += 1; // Benny
-                relationshipPoints += 1; // Emilio
-                relationshipPoints -= 2; // Dylan
+                relationshipPoints += 0;
+                messageQueue.add(new String[]{"Abita", "I'm not backing down. If anything happens to me, it's on you. But I'm going to get to the bottom of this, with or without your help."});
+            }
+            case 3 -> {
+                relationshipPoints -= 1;
+                messageQueue.add(new String[]{"Abita", "You think you can scare me into giving up? I'm not afraid of you, Benny. I'll find out what's going on, even if it means crossing every line you've set."});
+                messageQueue.add(new String[]{"Benny (smirks)", "You don't get it, do you? You're playing a dangerous game, and sooner or later, you'll find out just how much danger you're really in. But if you think you can handle it, then go ahead. Just don't say I didn't warn you."});
+                messageQueue.add(new String[]{"Abita", "Thanks, but I'm not here to play nice. I'll find out what's going on with or without your help."});
+                messageQueue.add(new String[]{"Benny (smirks again)", "Just try not to end up in the same place as your friend. These are dangerous times."});
             }
         }
-        currentSection = 8;
-        showEndScreen();
+
+        messageQueue.addAll(Arrays.asList(
+                new String[]{"Abita (Inner monologue)", "He's trying to intimidate me. But it's not working. He knows more than he's letting on, and I'm going to find out what that is."},
+                new String[]{"", "You walk outside and find Judas leaning against a brick wall, half in shadow. His arms are crossed, expression unreadable. His eyes flick briefly toward you."},
+                new String[]{"Abita", "You haven't said anything since Mara died. Don't you care?"},
+                new String[]{"Judas", "Caring doesn't bring the dead back. And asking the wrong questions gets more people killed."}
+        ));
+
+        dialogContainer.getChildren().clear();
+        dialogContainer.getChildren().addAll(createTextbox());
+        showNextMessage();
+    }
+
+    private void loadJudasChoices() {
+        messageQueue.clear();
+        currentSection = 10;
+
+        dialogContainer.getChildren().clear();
+        showChoiceButtons(
+                new String[]{"Option 1", "Agree with him"},
+                new String[]{"Option 2", "Push back"},
+                new String[]{"Option 3", "Demand answers"}
+        );
+    }
+
+    private void loadJudasResponse(int choice) {
+        showCharacterImage("judas.png");
+        messageQueue.clear();
+        currentSection = 11;
+
+        switch(choice) {
+            case 1 -> {
+                relationshipPoints += 1;
+                messageQueue.add(new String[]{"Abita", "Maybe you're right. Maybe justice is just a fantasy. But I still have to try."});
+            }
+            case 2 -> {
+                relationshipPoints -= 1;
+                messageQueue.add(new String[]{"Abita", "Just because you gave up on people doesn't mean I will."});
+            }
+            case 3 -> {
+                relationshipPoints -= 2;
+                messageQueue.add(new String[]{"Abita", "Stop avoiding it. What do you know, Judas?"});
+            }
+        }
+
+        messageQueue.addAll(Arrays.asList(
+                new String[]{"Judas", "You want justice? Justice is a myth. There's only truth and most people can't handle it."},
+                new String[]{"Abita", "Try me."},
+                new String[]{"Judas", "You don't know what you're asking for."},
+                new String[]{"", "He pushes off the wall, brushing past you. As he walks away, his voice trails behind quiet, but heavy."},
+                new String[]{"Judas", "Some truths don't stay buried without reason."},
+                new String[]{"", "You watch Judas disappear around the corner, his words lingering in your mind like smoke. Shaking it off, you make your way toward the courtyard."},
+                new String[]{"", "Before you can catch your breath, a voice cuts in smoothly beside you. It's Dylan."},
+                new String[]{"Dylan (grinning)", "Well, well… Detective Vesela. Heard you've been snooping around."},
+                new String[]{"Abita", "Are you surprised? Or… worried?"}
+        ));
+
+        dialogContainer.getChildren().clear();
+        dialogContainer.getChildren().addAll(createTextbox());
+        showNextMessage();
+    }
+
+    private void loadDylanFinalChoices() {
+        messageQueue.clear();
+        currentSection = 12;
+
+        dialogContainer.getChildren().clear();
+        showChoiceButtons(
+                new String[]{"Option 1", "Flirt back"},
+                new String[]{"Option 2", "Challenge him"},
+                new String[]{"Option 3", "Stay cold"}
+        );
+    }
+
+    private void loadDylanFinalResponse(int choice) {
+        showCharacterImage("dylan.png");
+        messageQueue.clear();
+        currentSection = 13;
+
+        switch(choice) {
+            case 1 -> {
+                relationshipPoints += 1;
+                messageQueue.add(new String[]{"Abita", "Maybe I just wanted your attention. Looks like it worked."});
+            }
+            case 2 -> {
+                relationshipPoints -= 1;
+                messageQueue.add(new String[]{"Abita", "Only guilty people get nervous when someone starts asking questions."});
+            }
+            case 3 -> {
+                relationshipPoints += 0;
+                messageQueue.add(new String[]{"Abita", "I'm not here to impress you, Dylan. Just tell me what you know."});
+            }
+        }
+
+        messageQueue.addAll(Arrays.asList(
+                new String[]{"Dylan (amused, with a hint of menace)", "You're bold. That might just get you killed, you know. Or… worse, getting noticed by the wrong people."},
+                new String[]{"", "You turn away from Dylan, his words echoing in your mind. With your steps firm and keeping your voice steady. You whispering to yourself"},
+                new String[]{"Abita", "Too late for that. I'm already in this… and I'm not backing down now."}
+        ));
+
+        dialogContainer.getChildren().clear();
+        dialogContainer.getChildren().addAll(createTextbox());
+        showNextMessage();
     }
 
     private void showCharacterImage(String imagePath) {
@@ -364,7 +423,7 @@ public class Chapter2Scene {
         animateText(currentMessage[0], currentMessage[1]);
 
         if (!currentMessage[0].equals(" ") && !currentMessage[0].contains("(Inner monologue)")) {
-            showCharacterImage(currentMessage[0].toLowerCase() + ".png");
+            showCharacterImage(currentMessage[0].toLowerCase().replace(" (inner monologue)", "") + ".png");
         } else {
             hideCharacterImage();
         }
@@ -406,58 +465,29 @@ public class Chapter2Scene {
             return;
         }
 
-        switch(currentSection) {
-            case 1:
-                loadInitialChoices();
-                break;
-            case 2: // Handled by handleChoice()
-                break;
-            case 3:
-                loadEmilioChoices();
-                break;
-            case 4:
-                loadDreamSequence(); // First load the dream sequence messages
-                break;
-            case 5:
-                // After dream sequence messages finish, move to final response
-                currentSection = 6;
-                loadFinalResponse();
-                break;
-            case 6:
-                loadFinalChoices();
-                break;
-            case 7:
-                showEndScreen();
-                break;
-            default:
-                showCurrentChoices();
-        }
+        showCurrentChoices();
     }
 
     private void showCurrentChoices() {
         switch (currentSection) {
-            case 1: loadInitialChoices(); break;
-            case 3: loadEmilioChoices(); break;
-            case 5: loadDreamSequence(); break;
-            case 6: loadFinalResponse(); break;
-            case 7: loadFinalChoices(); break;
-            case 8: showEndScreen(); break;
+            case 1 -> loadDylanChoices();
+            case 3 -> loadEmilioChoices1();
+            case 5 -> loadEmilioChoices2();
+            case 7 -> loadBennyChoices();
+            case 9 -> loadJudasChoices();
+            case 11 -> loadDylanFinalChoices();
+            case 13 -> showEndScreen();
         }
     }
 
     private void handleChoice(int choice) {
         switch (currentSection) {
-            case 2:
-                relationshipPoints += 1;
-                if (choice == 1) loadJudasPath();
-                else loadDylanPath();
-                break;
-            case 4:
-                loadEmilioResponse(choice);
-                break;
-            case 7:
-                handleFinalChoice(choice);
-                break;
+            case 2 -> loadDylanResponse(choice);
+            case 4 -> loadEmilioResponse1(choice);
+            case 6 -> loadEmilioResponse2(choice);
+            case 8 -> loadBennyResponse(choice);
+            case 10 -> loadJudasResponse(choice);
+            case 12 -> loadDylanFinalResponse(choice);
         }
     }
 
@@ -544,7 +574,7 @@ public class Chapter2Scene {
                 "-fx-border-width: 3; " +
                 "-fx-border-radius: 15;");
 
-        Label endLabel = new Label("CHAPTER 2 COMPLETE");
+        Label endLabel = new Label("CHAPTER 3 COMPLETE");
         endLabel.setStyle("-fx-font-size: 32px; " +
                 "-fx-text-fill: " + TEXT_COLOR + "; " +
                 "-fx-font-family: 'Arial Rounded MT Bold';");
@@ -557,7 +587,7 @@ public class Chapter2Scene {
         VBox buttonBox = new VBox(15);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button continueButton = new Button("Continue to Chapter 3");
+        Button continueButton = new Button("Continue to Chapter 4");
         continueButton.setStyle("-fx-font-size: 18px; " +
                 "-fx-text-fill: white; " +
                 "-fx-background-color: " + DARK_PINK + "; " +
@@ -588,7 +618,7 @@ public class Chapter2Scene {
         VBox loadingContent = new VBox(20);
         loadingContent.setAlignment(Pos.CENTER_LEFT);
 
-        Label loadingLabel = new Label("Loading Chapter 3...");
+        Label loadingLabel = new Label("Loading Chapter 4...");
         loadingLabel.setStyle("-fx-font-size: 32px; " +
                 "-fx-text-fill: " + TEXT_COLOR + "; " +
                 "-fx-font-family: 'Arial Rounded MT Bold';");
@@ -604,10 +634,10 @@ public class Chapter2Scene {
 
         Timeline loadingTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), e -> {
-                    Chapter3Scene chapter3 = new Chapter3Scene(primaryStage);
-                    primaryStage.setScene(chapter3.getScene());
-                })
-        );
+                    loadingLabel.setText("Chapter 4 is not implemented yet");
+                    progress.setVisible(false);
+                }
+                ));
         loadingTimeline.play();
     }
 
