@@ -17,7 +17,7 @@
 * Genom att skapa nya packages för olika kategorier så håller vi koden organiserat och strukturerat.
 *
 *
-* HELLOAPPLICATION.java
+* MenuManager.java
 * ShowLoginScreen-metoden
 * -fixa settings knappen.
 * -göra så att inloggningen sparas även om man slutar köra koden
