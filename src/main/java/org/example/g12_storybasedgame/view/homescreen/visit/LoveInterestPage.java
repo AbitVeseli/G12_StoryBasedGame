@@ -1,7 +1,6 @@
 package org.example.g12_storybasedgame.view.homescreen.visit;
 
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,11 +30,20 @@ public class LoveInterestPage extends BorderPane {
     }
 
     private void setupUI() {
-        // Top bar with buttons
-        HBox topBar = new HBox(20);
+        // Top bar with back button on left
+        HBox topBar = new HBox();
         topBar.setPadding(new Insets(15));
-        topBar.setAlignment(Pos.TOP_RIGHT);
+        topBar.setAlignment(Pos.TOP_LEFT); // Changed to TOP_LEFT
         topBar.setStyle("-fx-background-color: rgba(173, 216, 230, 0.7);");
+
+        // Back button (replacing Exit)
+        Button backButton = new Button("← Back");
+        backButton.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px;");
+        backButton.setOnAction(e -> returnToCharacterSelection());
+
+        // Right-aligned buttons container
+        HBox rightButtons = new HBox(20);
+        rightButtons.setAlignment(Pos.TOP_RIGHT);
 
         // Gallery button
         Button galleryButton = new Button("Gallery");
@@ -47,12 +55,12 @@ public class LoveInterestPage extends BorderPane {
         infoButton.setStyle("-fx-background-color: magenta; -fx-text-fill: white;");
         infoButton.setOnAction(e -> showInfo());
 
-        // Exit button
-        Button exitButton = new Button("Exit");
-        exitButton.setStyle("-fx-background-color: magenta; -fx-text-fill: white;");
-        exitButton.setOnAction(e -> returnToHome());
+        rightButtons.getChildren().addAll(galleryButton, infoButton);
 
-        topBar.getChildren().addAll(galleryButton, infoButton, exitButton);
+        // Add both to top bar with spacer
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        topBar.getChildren().addAll(backButton, spacer, rightButtons);
         this.setTop(topBar);
 
         // Center content - love interest image
@@ -87,8 +95,14 @@ public class LoveInterestPage extends BorderPane {
         // with character-specific information
     }
 
-    private void returnToHome() {
-        // This will close the current window
-        ((Stage) this.getScene().getWindow()).close();
+
+    private void returnToCharacterSelection() {
+        // Get the current stage
+        StackPane root = (StackPane) this.getScene().getRoot();
+
+        if (root.getChildren().size() > 1) {
+            root.getChildren().remove(root.getChildren().size() - 1);
+        }
+
     }
 }
