@@ -1,6 +1,7 @@
 package org.example.g12_storybasedgame.view.homescreen; //detta kan behövas ändra senare
                                         // om vi ska skapa paket för varje sak
 import javafx.application.Application;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -224,12 +225,13 @@ public class Homescreen extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     private void showLoveInterestsPopup() {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Love Interests");
 
-        // Create the popup layout
+        // Create the popup layout with semi-transparent background
         BorderPane popupLayout = new BorderPane();
         popupLayout.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
 
@@ -251,7 +253,7 @@ public class Homescreen extends Application {
                 "-fx-text-fill: white; " +
                 "-fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.5), 2, 0.0, 1, 1);");
 
-        // Love interest buttons
+        // Love interest buttons container
         HBox buttonsContainer = new HBox(30);
         buttonsContainer.setAlignment(Pos.CENTER);
         buttonsContainer.setPadding(new Insets(20, 0, 30, 0));
@@ -262,12 +264,15 @@ public class Homescreen extends Application {
             VBox liContainer = new VBox(10);
             liContainer.setAlignment(Pos.CENTER);
 
+            // Create button with circular image
             Button liButton = new Button();
             liButton.setStyle("-fx-background-radius: 50%; " +
                     "-fx-border-color: white; " +
                     "-fx-border-width: 2; " +
                     "-fx-border-radius: 50%; " +
-                    "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);");
+                    "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1); " +
+                    "-fx-background-color: transparent; " +  // Prevents darkening
+                    "-fx-padding: 0;");  // Removes default button padding
 
             try {
                 InputStream imageStream = getClass().getResourceAsStream("/" + li + ".png");
@@ -276,29 +281,41 @@ public class Homescreen extends Application {
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(120);
                     imageView.setFitHeight(120);
-                    imageView.setClip(new Circle(60, 60, 60));
+                    imageView.setClip(new Circle(60, 60, 60)); // Makes image circular
+                    imageView.setPickOnBounds(true); // Allows clicks directly on the image
                     liButton.setGraphic(imageView);
                 } else {
-                    liButton.setText(li);
+                    liButton.setText(li); // Fallback to text if image missing
                     liButton.setStyle(liButton.getStyle() + "-fx-font-size: 16px; -fx-text-fill: white;");
                 }
             } catch (Exception e) {
-                liButton.setText(li);
+                liButton.setText(li); // Fallback to text if error
                 liButton.setStyle(liButton.getStyle() + "-fx-font-size: 16px; -fx-text-fill: white;");
             }
 
+            // Character name label
             Label liName = new Label(li);
             liName.setStyle("-fx-font-size: 18px; -fx-text-fill: white; -fx-font-weight: bold;");
 
             liContainer.getChildren().addAll(liButton, liName);
 
+            // Button action - shows profile when clicked
             liButton.setOnAction(e -> {
                 popupStage.close();
-                showLoveInterestProfile(li); // Changed to showLoveInterestProfile
+                showLoveInterestProfile(li); // Make sure this method exists in your class
             });
 
             // Hover effects
-            setupButtonHoverEffects(liButton);
+            liButton.setOnMouseEntered(event -> {
+                liButton.setScaleX(1.1);
+                liButton.setScaleY(1.1);
+                liButton.setCursor(Cursor.HAND);
+            });
+
+            liButton.setOnMouseExited(event -> {
+                liButton.setScaleX(1.0);
+                liButton.setScaleY(1.0);
+            });
 
             buttonsContainer.getChildren().add(liContainer);
         }
@@ -311,21 +328,48 @@ public class Homescreen extends Application {
                 "-fx-font-weight: bold; " +
                 "-fx-padding: 8 25; " +
                 "-fx-background-radius: 15;");
-        closeButton.setOnAction(e -> popupStage.close());
-        setupButtonHoverEffects(closeButton);
 
-        // Add all components
+        closeButton.setOnAction(e -> popupStage.close());
+
+        // Close button hover effects
+        closeButton.setOnMouseEntered(event -> {
+            closeButton.setStyle(closeButton.getStyle() +
+                    "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);");
+            closeButton.setCursor(Cursor.HAND);
+        });
+
+        closeButton.setOnMouseExited(event -> {
+            closeButton.setStyle(closeButton.getStyle()
+                    .replace("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);", ""));
+        });
+
+        // Add all components to the popup
         popupContent.getChildren().addAll(title, buttonsContainer, closeButton);
         popupLayout.setCenter(popupContent);
 
+        // Create and show the scene
         Scene popupScene = new Scene(popupLayout, 600, 400);
         popupScene.setFill(Color.TRANSPARENT);
         popupStage.setScene(popupScene);
 
-        // Make draggable
-        makeDraggable(popupStage, popupContent);
+        // Make the popup draggable
+        final Delta dragDelta = new Delta();
+        popupContent.setOnMousePressed(mouseEvent -> {
+            dragDelta.x = popupStage.getX() - mouseEvent.getScreenX();
+            dragDelta.y = popupStage.getY() - mouseEvent.getScreenY();
+        });
+
+        popupContent.setOnMouseDragged(mouseEvent -> {
+            popupStage.setX(mouseEvent.getScreenX() + dragDelta.x);
+            popupStage.setY(mouseEvent.getScreenY() + dragDelta.y);
+        });
 
         popupStage.showAndWait();
+    }
+
+    // Delta class for draggable functionality (add this as an inner class)
+    class Delta {
+        double x, y;
     }
 
     private void showLoveInterestProfile(String loveInterest) {
@@ -333,7 +377,6 @@ public class Homescreen extends Application {
         profileStage.initModality(Modality.APPLICATION_MODAL);
         profileStage.setTitle(loveInterest + "'s Profile");
 
-        // Create the profile page
         BorderPane profileLayout = new BorderPane();
         profileLayout.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
 
@@ -347,53 +390,73 @@ public class Homescreen extends Application {
                 "-fx-border-radius: 15;" +
                 "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
 
-        // Load and display the main image
+        // Main image
+        ImageView mainImageView = new ImageView();
         try {
-            InputStream imageStream = getClass().getResourceAsStream("/" + loveInterest + "_main.png");
-            if (imageStream != null) {
-                Image image = new Image(imageStream);
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(300);
-                imageView.setPreserveRatio(true);
-                profileContent.getChildren().add(imageView);
-            } else {
-                Label noImageLabel = new Label("No image available");
-                noImageLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
-                profileContent.getChildren().add(noImageLabel);
-            }
+            Image image = new Image(getClass().getResourceAsStream("/" + loveInterest + "_main.png"));
+            mainImageView.setImage(image);
+            mainImageView.setFitWidth(300);
+            mainImageView.setPreserveRatio(true);
         } catch (Exception e) {
-            Label errorLabel = new Label("Error loading image");
-            errorLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+            mainImageView.setImage(null);
+            Label errorLabel = new Label("Image not available");
+            errorLabel.setStyle("-fx-text-fill: white;");
             profileContent.getChildren().add(errorLabel);
         }
 
-        // Character name
-        Label nameLabel = new Label(loveInterest);
-        nameLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
-        profileContent.getChildren().add(nameLabel);
+        // Action buttons (Gallery, Info, etc.)
+        HBox actionButtons = new HBox(20);
+        actionButtons.setAlignment(Pos.CENTER);
 
-        // Close button
-        Button closeButton = new Button("Close");
-        closeButton.setStyle("-fx-background-color: white; " +
-                "-fx-text-fill: #ff69b4; " +
-                "-fx-font-size: 16px; " +
-                "-fx-font-weight: bold; " +
-                "-fx-padding: 8 25; " +
-                "-fx-background-radius: 15;");
-        closeButton.setOnAction(e -> profileStage.close());
-        setupButtonHoverEffects(closeButton);
+        Button galleryButton = createActionButton("Gallery", loveInterest);
+        Button infoButton = createActionButton("Info", loveInterest);
+        Button backButton = createActionButton("Back", loveInterest);
 
-        profileContent.getChildren().add(closeButton);
+        actionButtons.getChildren().addAll(galleryButton, infoButton, backButton);
+
+        // Set button actions
+        galleryButton.setOnAction(e -> showGallery(loveInterest));
+        infoButton.setOnAction(e -> showCharacterInfo(loveInterest));
+        backButton.setOnAction(e -> profileStage.close());
+
+        // Add all components
+        profileContent.getChildren().addAll(mainImageView, new Label(loveInterest), actionButtons);
         profileLayout.setCenter(profileContent);
 
         Scene profileScene = new Scene(profileLayout, 400, 500);
         profileScene.setFill(Color.TRANSPARENT);
         profileStage.setScene(profileScene);
-
-        // Make draggable
         makeDraggable(profileStage, profileContent);
-
         profileStage.showAndWait();
+    }
+
+    private Button createActionButton(String text, String loveInterest) {
+        Button button = new Button(text);
+        button.setStyle("-fx-background-color: white; " +
+                "-fx-text-fill: #ff69b4; " +
+                "-fx-font-weight: bold; " +
+                "-fx-padding: 8 15; " +
+                "-fx-background-radius: 10;");
+
+        // Hover effects
+        button.setOnMouseEntered(e -> button.setStyle(button.getStyle() +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);"));
+        button.setOnMouseExited(e -> button.setStyle(button.getStyle()
+                .replace("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);", "")));
+
+        return button;
+    }
+
+    private void showGallery(String loveInterest) {
+        // Implement gallery functionality
+        System.out.println("Showing gallery for " + loveInterest);
+        // You can create a new popup or scene showing the character's gallery
+    }
+
+    private void showCharacterInfo(String loveInterest) {
+        // Implement info functionality
+        System.out.println("Showing info for " + loveInterest);
+        // You can reuse your existing popup mechanism to show character info
     }
 
     // Helper method for hover effects
@@ -425,12 +488,6 @@ public class Homescreen extends Application {
             stage.setY(mouseEvent.getScreenY() + dragDelta.y);
         });
     }
-
-    // Class for drag delta calculations
-    class Delta {
-        double x, y;
-    }
-
 
 
 }

@@ -59,10 +59,8 @@ public class StorylineScene {
                     BackgroundPosition.CENTER,
                     new BackgroundSize(100, 100, true, true, true, true));
             root.setBackground(new Background(bgImage));
-            System.out.println("im dumb");
         } else {
             root.setStyle(PINK_BG);
-            System.out.println("stop fucking printing pink");
         }
 
 
