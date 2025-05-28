@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.example.g12_storybasedgame.view.homescreen.Homescreen;
 
+import java.io.InputStream;
 import java.net.URL;
 
 public class LoveInterestPage extends BorderPane {
@@ -55,10 +56,22 @@ public class LoveInterestPage extends BorderPane {
         this.setTop(topBar);
 
         // Center content - love interest image
-        ImageView liImage = new ImageView(new Image(getClass().getResourceAsStream("/" + loveInterestName + "_main.png")));
-        liImage.setPreserveRatio(true);
-        liImage.setFitWidth(400);
-        this.setCenter(liImage);
+        try {
+            InputStream imageStream = getClass().getResourceAsStream("/" + loveInterestName + "_main.png");
+            if (imageStream == null) {
+                System.err.println("Image not found: /" + loveInterestName + "_main.png");
+                // Add fallback content
+                this.setCenter(new Text("Image not found: " + loveInterestName));
+            } else {
+                ImageView liImage = new ImageView(new Image(imageStream));
+                liImage.setPreserveRatio(true);
+                liImage.setFitWidth(400);
+                this.setCenter(liImage);
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading image: " + e.getMessage());
+            this.setCenter(new Text("Error loading image"));
+        }
     }
 
     private void showGallery() {
@@ -75,7 +88,7 @@ public class LoveInterestPage extends BorderPane {
     }
 
     private void returnToHome() {
-        Homescreen home = new Homescreen();
-        home.start(primaryStage);
+        // This will close the current window
+        ((Stage) this.getScene().getWindow()).close();
     }
 }

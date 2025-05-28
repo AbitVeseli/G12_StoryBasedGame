@@ -1,6 +1,7 @@
 package org.example.g12_storybasedgame.view.homescreen; //detta kan behövas ändra senare
                                         // om vi ska skapa paket för varje sak
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -9,12 +10,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
-import org.example.g12_storybasedgame.view.homescreen.visit.VisitButton;
+import org.example.g12_storybasedgame.view.homescreen.visit.LoveInterestPage;
+
+import java.io.InputStream;
 
 public class Homescreen extends Application {
 
@@ -183,24 +187,10 @@ public class Homescreen extends Application {
                     StorylineScene storylineScene = new StorylineScene(primaryStage);
                     primaryStage.setScene(storylineScene.getScene());
                 });
-            } else if (buttonLabels[i].equals("Visit")) {
-                btn.setOnAction(e -> {
-                    System.out.println("DEBUG: Visit button clicked");
+            }   else if (buttonLabels[i].equals("Visit")) {
+            btn.setOnAction(e -> showLoveInterestsPopup());
 
-                    VisitButton visitContent = new VisitButton(primaryStage);
-
-                    // Create root container
-                    StackPane visit = new StackPane();
-                    root.getChildren().add(visitContent);
-
-                    // Create scene
-                    Scene visitScene = new Scene(visit, 1024, 619);
-                    visitScene.setFill(Color.TRANSPARENT); // Remove white background
-
-                    primaryStage.setScene(visitScene);
-                    System.out.println("DEBUG: Scene set on stage");
-                });
-            }
+        }
 
             // Gör så att varje knapp växer och delar utrymmet jämt
             HBox.setHgrow(btn, Priority.ALWAYS);  // Gör att varje knapp växer jämt och fyller bredden
@@ -234,5 +224,213 @@ public class Homescreen extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    private void showLoveInterestsPopup() {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Love Interests");
+
+        // Create the popup layout
+        BorderPane popupLayout = new BorderPane();
+        popupLayout.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
+
+        // Main content container
+        VBox popupContent = new VBox(20);
+        popupContent.setPadding(new Insets(30));
+        popupContent.setAlignment(Pos.CENTER);
+        popupContent.setStyle("-fx-background-color: linear-gradient(to bottom, #ffb6c1, #ff69b4);" +
+                "-fx-background-radius: 15;" +
+                "-fx-border-color: white;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-radius: 15;" +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+
+        // Title
+        Label title = new Label("Choose Your Love Interest");
+        title.setStyle("-fx-font-size: 28px; " +
+                "-fx-font-weight: bold; " +
+                "-fx-text-fill: white; " +
+                "-fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.5), 2, 0.0, 1, 1);");
+
+        // Love interest buttons
+        HBox buttonsContainer = new HBox(30);
+        buttonsContainer.setAlignment(Pos.CENTER);
+        buttonsContainer.setPadding(new Insets(20, 0, 30, 0));
+
+        String[] loveInterests = {"LI1", "LI2", "LI3", "LI4"};
+
+        for (String li : loveInterests) {
+            VBox liContainer = new VBox(10);
+            liContainer.setAlignment(Pos.CENTER);
+
+            Button liButton = new Button();
+            liButton.setStyle("-fx-background-radius: 50%; " +
+                    "-fx-border-color: white; " +
+                    "-fx-border-width: 2; " +
+                    "-fx-border-radius: 50%; " +
+                    "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);");
+
+            try {
+                InputStream imageStream = getClass().getResourceAsStream("/" + li + ".png");
+                if (imageStream != null) {
+                    Image image = new Image(imageStream);
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitWidth(120);
+                    imageView.setFitHeight(120);
+                    imageView.setClip(new Circle(60, 60, 60));
+                    liButton.setGraphic(imageView);
+                } else {
+                    liButton.setText(li);
+                    liButton.setStyle(liButton.getStyle() + "-fx-font-size: 16px; -fx-text-fill: white;");
+                }
+            } catch (Exception e) {
+                liButton.setText(li);
+                liButton.setStyle(liButton.getStyle() + "-fx-font-size: 16px; -fx-text-fill: white;");
+            }
+
+            Label liName = new Label(li);
+            liName.setStyle("-fx-font-size: 18px; -fx-text-fill: white; -fx-font-weight: bold;");
+
+            liContainer.getChildren().addAll(liButton, liName);
+
+            liButton.setOnAction(e -> {
+                popupStage.close();
+                showLoveInterestProfile(li); // Changed to showLoveInterestProfile
+            });
+
+            // Hover effects
+            setupButtonHoverEffects(liButton);
+
+            buttonsContainer.getChildren().add(liContainer);
+        }
+
+        // Close button
+        Button closeButton = new Button("Close");
+        closeButton.setStyle("-fx-background-color: white; " +
+                "-fx-text-fill: #ff69b4; " +
+                "-fx-font-size: 16px; " +
+                "-fx-font-weight: bold; " +
+                "-fx-padding: 8 25; " +
+                "-fx-background-radius: 15;");
+        closeButton.setOnAction(e -> popupStage.close());
+        setupButtonHoverEffects(closeButton);
+
+        // Add all components
+        popupContent.getChildren().addAll(title, buttonsContainer, closeButton);
+        popupLayout.setCenter(popupContent);
+
+        Scene popupScene = new Scene(popupLayout, 600, 400);
+        popupScene.setFill(Color.TRANSPARENT);
+        popupStage.setScene(popupScene);
+
+        // Make draggable
+        makeDraggable(popupStage, popupContent);
+
+        popupStage.showAndWait();
+    }
+
+    private void showLoveInterestProfile(String loveInterest) {
+        Stage profileStage = new Stage();
+        profileStage.initModality(Modality.APPLICATION_MODAL);
+        profileStage.setTitle(loveInterest + "'s Profile");
+
+        // Create the profile page
+        BorderPane profileLayout = new BorderPane();
+        profileLayout.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
+
+        VBox profileContent = new VBox(20);
+        profileContent.setPadding(new Insets(30));
+        profileContent.setAlignment(Pos.CENTER);
+        profileContent.setStyle("-fx-background-color: linear-gradient(to bottom, #ffb6c1, #ff69b4);" +
+                "-fx-background-radius: 15;" +
+                "-fx-border-color: white;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-radius: 15;" +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+
+        // Load and display the main image
+        try {
+            InputStream imageStream = getClass().getResourceAsStream("/" + loveInterest + "_main.png");
+            if (imageStream != null) {
+                Image image = new Image(imageStream);
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(300);
+                imageView.setPreserveRatio(true);
+                profileContent.getChildren().add(imageView);
+            } else {
+                Label noImageLabel = new Label("No image available");
+                noImageLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+                profileContent.getChildren().add(noImageLabel);
+            }
+        } catch (Exception e) {
+            Label errorLabel = new Label("Error loading image");
+            errorLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+            profileContent.getChildren().add(errorLabel);
+        }
+
+        // Character name
+        Label nameLabel = new Label(loveInterest);
+        nameLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
+        profileContent.getChildren().add(nameLabel);
+
+        // Close button
+        Button closeButton = new Button("Close");
+        closeButton.setStyle("-fx-background-color: white; " +
+                "-fx-text-fill: #ff69b4; " +
+                "-fx-font-size: 16px; " +
+                "-fx-font-weight: bold; " +
+                "-fx-padding: 8 25; " +
+                "-fx-background-radius: 15;");
+        closeButton.setOnAction(e -> profileStage.close());
+        setupButtonHoverEffects(closeButton);
+
+        profileContent.getChildren().add(closeButton);
+        profileLayout.setCenter(profileContent);
+
+        Scene profileScene = new Scene(profileLayout, 400, 500);
+        profileScene.setFill(Color.TRANSPARENT);
+        profileStage.setScene(profileScene);
+
+        // Make draggable
+        makeDraggable(profileStage, profileContent);
+
+        profileStage.showAndWait();
+    }
+
+    // Helper method for hover effects
+    private void setupButtonHoverEffects(Button button) {
+        String originalStyle = button.getStyle();
+
+        button.setOnMouseEntered(event -> {
+            button.setStyle(originalStyle +
+                    "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);" +
+                    "-fx-cursor: hand;");
+        });
+
+        button.setOnMouseExited(event -> {
+            button.setStyle(originalStyle);
+        });
+    }
+
+    // Helper method to make windows draggable
+    private void makeDraggable(Stage stage, Node node) {
+        final Delta dragDelta = new Delta();
+
+        node.setOnMousePressed(mouseEvent -> {
+            dragDelta.x = stage.getX() - mouseEvent.getScreenX();
+            dragDelta.y = stage.getY() - mouseEvent.getScreenY();
+        });
+
+        node.setOnMouseDragged(mouseEvent -> {
+            stage.setX(mouseEvent.getScreenX() + dragDelta.x);
+            stage.setY(mouseEvent.getScreenY() + dragDelta.y);
+        });
+    }
+
+    // Class for drag delta calculations
+    class Delta {
+        double x, y;
+    }
+
+
 
 }
