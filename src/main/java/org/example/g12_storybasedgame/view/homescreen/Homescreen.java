@@ -7,21 +7,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
+import org.example.g12_storybasedgame.view.homescreen.visit.VisitButton;
 
 public class Homescreen extends Application {
 
@@ -189,6 +182,23 @@ public class Homescreen extends Application {
                 btn.setOnAction(e -> {
                     StorylineScene storylineScene = new StorylineScene(primaryStage);
                     primaryStage.setScene(storylineScene.getScene());
+                });
+            } else if (buttonLabels[i].equals("Visit")) {
+                btn.setOnAction(e -> {
+                    System.out.println("DEBUG: Visit button clicked");
+
+                    VisitButton visitContent = new VisitButton(primaryStage);
+
+                    // Create root container
+                    StackPane visit = new StackPane();
+                    root.getChildren().add(visitContent);
+
+                    // Create scene
+                    Scene visitScene = new Scene(visit, 1024, 619);
+                    visitScene.setFill(Color.TRANSPARENT); // Remove white background
+
+                    primaryStage.setScene(visitScene);
+                    System.out.println("DEBUG: Scene set on stage");
                 });
             }
 
