@@ -68,29 +68,47 @@ public class CharacterSelectionScreen extends BorderPane {
                 "-fx-padding: 20;" +
                 "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);");
 
-        // Character image
+        // Fixed-size container with proper clipping
         StackPane imageContainer = new StackPane();
-        imageContainer.setStyle("-fx-background-radius: 50%;" +
-                "-fx-border-color: white;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-radius: 50%;");
+        imageContainer.setMinSize(150, 150);
+        imageContainer.setMaxSize(150, 150);
+        imageContainer.setStyle("-fx-background-color: transparent;");
 
+        // ImageView with perfect circular mask
         ImageView imageView = new ImageView();
+        imageView.setFitWidth(130);  // Increased to fill circle better
+        imageView.setFitHeight(130);
+        imageView.setPreserveRatio(false);  // Force exact dimensions
+
+        // Create circular clip with perfect alignment
+        Circle clip = new Circle(75, 75, 65);  // CenterX, CenterY, Radius (matches container center)
+        imageView.setClip(clip);
+
         try {
+            // Load image with cropping and scaling
             Image image = new Image(getClass().getResourceAsStream("/" + character + ".png"));
             imageView.setImage(image);
-            imageView.setFitWidth(150);
-            imageView.setFitHeight(150);
-            imageView.setPreserveRatio(true);
-            imageView.setClip(new Circle(75, 75, 75));
+
+            // Center the image within the circle
+            imageView.setX(10);
+            imageView.setY(10);
         } catch (Exception e) {
-            imageView.setImage(null);
+            // Fallback with centered text
             Label placeholder = new Label(character);
             placeholder.setStyle("-fx-font-size: 24px; -fx-text-fill: white;");
             imageContainer.getChildren().add(placeholder);
         }
 
-        imageContainer.getChildren().add(imageView);
+        // White border circle (separate from the clip)
+        Circle border = new Circle(75, 75, 65);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(2);
+
+        // Add components to container
+        if (imageView.getImage() != null) {
+            imageContainer.getChildren().addAll(imageView, border);
+        }
 
         // Character name
         Label nameLabel = new Label(character);
@@ -98,24 +116,24 @@ public class CharacterSelectionScreen extends BorderPane {
 
         characterCard.getChildren().addAll(imageContainer, nameLabel);
 
-        // Add click handler
+        // Click handling - now on the whole card
         characterCard.setOnMouseClicked(e -> showCharacterProfile(character));
         characterCard.setCursor(Cursor.HAND);
 
-        // Add hover effect
+        // Hover effects
         characterCard.setOnMouseEntered(e -> {
             characterCard.setScaleX(1.05);
             characterCard.setScaleY(1.05);
             characterCard.setStyle(characterCard.getStyle() +
-                    "-fx-background-color: rgba(255, 255, 255, 0.2);");
+                    "-fx-background-color: rgba(255, 255, 255, 0.3);");
         });
 
         characterCard.setOnMouseExited(e -> {
             characterCard.setScaleX(1.0);
             characterCard.setScaleY(1.0);
             characterCard.setStyle(characterCard.getStyle()
-                    .replace("-fx-background-color: rgba(255, 255, 255, 0.2);",
-                            "-fx-background-color: rgba(255, 255, 255, 0.1);"));
+                    .replace("-fx-background-color: rgba(255, 255, 255, 0.3);",
+                            "-fx-background-color: rgba(255, 255, 255, 0.2);"));
         });
 
         return characterCard;
