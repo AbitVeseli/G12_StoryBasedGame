@@ -73,7 +73,7 @@ public class Homescreen extends Application {
 
         // Settings and menu buttons
         Image settingsImage = new Image(getClass().getResource("/SETTINGS.png").toExternalForm());
-        Image menuImage = new Image(getClass().getResource("/star.png").toExternalForm());
+        Image menuImage = new Image(getClass().getResource("/MenuButton.png").toExternalForm());
 
         Button settingsButton = createRoundButton(settingsImage);
         Button menuButton = createRoundButton(menuImage);
