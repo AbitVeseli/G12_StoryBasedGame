@@ -35,10 +35,12 @@ public class StorylineScene {
         this.primaryStage = primaryStage;
         this.unlockedChapters = new HashMap<>();
         initializeUnlockedChapters();
-        this.root = new BorderPane();
+        //this.root = new BorderPane();
         setupUI();
-        this.scene = new Scene(root, 1024, 619);
-        scene.getRoot().setStyle(PINK_BG);
+        //this.scene = new Scene(root, 1024, 619);
+        //scene.getRoot().setStyle(PINK_BG);
+
+
     }
 
     private void initializeUnlockedChapters() {
@@ -64,8 +66,6 @@ public class StorylineScene {
         } else {
             root.setStyle(PINK_BG);
         }
-
-
 
         // Title
         Label title = new Label("Storyline Map");
@@ -216,33 +216,12 @@ public class StorylineScene {
     }
 
     private void returnToHomescreen() {
-        // Create fade out transition for current scene
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), root);
-        fadeOut.setFromValue(1.0);
-        fadeOut.setToValue(0.0);
-
-        fadeOut.setOnFinished(e -> {
-            // Create and show the home screen
-            Homescreen homescreen = new Homescreen();
-
-            // Start the homescreen and get its scene
-            homescreen.start(primaryStage);
-            Scene newScene = primaryStage.getScene();
-            StackPane newRoot = (StackPane) newScene.getRoot();
-
-            // Set initial opacity to 0 for fade in
-            newRoot.setOpacity(0);
-
-            // Create fade in transition for home screen
-            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), newRoot);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-            fadeIn.play();
-        });
-
-        // Start the fade out transition
-        fadeOut.play();
+        StackPane root = (StackPane) this.getParent();
+        root.getChildren().remove(this);
     }
+
+
+
 
     public Scene getScene() {
         return scene;
