@@ -1,5 +1,6 @@
 package org.example.g12_storybasedgame.view.homescreen;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
 import org.example.g12_storybasedgame.view.homescreen.visit.CharacterSelectionScreen;
 import org.example.g12_storybasedgame.view.homescreen.visit.VisitButton;
@@ -114,8 +116,26 @@ public class Homescreen extends Application {
 
             if (buttonLabels[i].equals("Storyline")) {
                 btn.setOnAction(e -> {
-                    StorylineScene storylineScene = new StorylineScene(primaryStage);
-                    primaryStage.setScene(storylineScene.getScene());
+                    // Create fade out transition
+                    FadeTransition fadeOut = new FadeTransition(Duration.millis(300), root);
+                    fadeOut.setFromValue(1.0);
+                    fadeOut.setToValue(0.0);
+
+                    fadeOut.setOnFinished(event -> {
+                        // Create and show storyline scene
+                        StorylineScene storylineScene = new StorylineScene(primaryStage);
+                        Scene newScene = storylineScene.getScene();
+                        StackPane newRoot = (StackPane) newScene.getRoot();
+                        newRoot.setOpacity(0);
+                        primaryStage.setScene(newScene);
+
+                        // Fade in new scene
+                        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), newRoot);
+                        fadeIn.setFromValue(0.0);
+                        fadeIn.setToValue(1.0);
+                        fadeIn.play();
+                    });
+                    fadeOut.play();
                 });
             } else if (buttonLabels[i].equals("Visit")) {
             btn.setOnAction(e -> {

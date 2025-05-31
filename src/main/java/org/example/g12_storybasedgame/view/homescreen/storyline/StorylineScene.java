@@ -1,5 +1,6 @@
 package org.example.g12_storybasedgame.view.homescreen.storyline;
 
+import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
@@ -12,6 +13,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.geometry.Point2D;
+import javafx.util.Duration;
 import org.example.g12_storybasedgame.view.homescreen.Homescreen;
 
 import java.io.InputStream;
@@ -214,8 +216,32 @@ public class StorylineScene {
     }
 
     private void returnToHomescreen() {
-        Homescreen homescreen = new Homescreen();
-        homescreen.start(primaryStage);
+        // Create fade out transition for current scene
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), root);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+
+        fadeOut.setOnFinished(e -> {
+            // Create and show the home screen
+            Homescreen homescreen = new Homescreen();
+
+            // Start the homescreen and get its scene
+            homescreen.start(primaryStage);
+            Scene newScene = primaryStage.getScene();
+            StackPane newRoot = (StackPane) newScene.getRoot();
+
+            // Set initial opacity to 0 for fade in
+            newRoot.setOpacity(0);
+
+            // Create fade in transition for home screen
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), newRoot);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
+        });
+
+        // Start the fade out transition
+        fadeOut.play();
     }
 
     public Scene getScene() {
