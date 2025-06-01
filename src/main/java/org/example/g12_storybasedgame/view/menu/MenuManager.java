@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -38,6 +39,7 @@ public class MenuManager extends Application {
         primaryStage.setTitle("Otome Adventure");
         primaryStage.setFullScreen(true); // false är endast för testning annars true
         primaryStage.setFullScreenExitHint("");
+        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
         showStartScreen();
         primaryStage.show();
@@ -406,8 +408,4 @@ public class MenuManager extends Application {
         alert.showAndWait();
 
     }
-
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
 }
