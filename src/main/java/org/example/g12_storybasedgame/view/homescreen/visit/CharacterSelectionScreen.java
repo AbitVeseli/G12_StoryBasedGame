@@ -26,11 +26,11 @@ public class CharacterSelectionScreen extends BorderPane {
 //        this.setStyle("-fx-background-color: rgba(0, 0, 0, 0.9);");
 
         // Back button
-        Button backButton = new Button("← Back");
-        backButton.setStyle("-fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: transparent;");
-        backButton.setOnAction(e -> returnToHomeScreen());
+        Button backBtn = new Button("← Back");
+        backBtn.setStyle("-fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: transparent;");
+        backBtn.setOnAction(e -> returnToHomeScreen());
 
-        HBox topBar = new HBox(backButton);
+        HBox topBar = new HBox(backBtn);
         topBar.setPadding(new Insets(15));
         this.setTop(topBar);
 
@@ -151,12 +151,12 @@ public class CharacterSelectionScreen extends BorderPane {
     }
 
     private void returnToHomeScreen() {
-        StackPane root = (StackPane) primaryStage.getScene().getRoot();
+        StackPane root = (StackPane) this.getParent();
         if (root.getChildren().size() > 1) {
-            FadeTransition fadeOut = new FadeTransition(Duration.millis(200), root.getChildren().get(1));
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(200), this);
             fadeOut.setFromValue(1);
             fadeOut.setToValue(0);
-            fadeOut.setOnFinished(e -> root.getChildren().remove(1));
+            fadeOut.setOnFinished(e -> root.getChildren().remove(this));
             fadeOut.play();
         }
     }
