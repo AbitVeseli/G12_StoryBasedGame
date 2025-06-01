@@ -19,7 +19,7 @@ import org.example.g12_storybasedgame.view.homescreen.Homescreen;
 import java.io.InputStream;
 import java.util.*;
 
-public class StorylineScene {
+public class StorylineScene extends BorderPane {
     private Scene scene;
     private BorderPane root;
     private Stage primaryStage;
@@ -35,12 +35,7 @@ public class StorylineScene {
         this.primaryStage = primaryStage;
         this.unlockedChapters = new HashMap<>();
         initializeUnlockedChapters();
-        //this.root = new BorderPane();
         setupUI();
-        //this.scene = new Scene(root, 1024, 619);
-        //scene.getRoot().setStyle(PINK_BG);
-
-
     }
 
     private void initializeUnlockedChapters() {
@@ -53,18 +48,13 @@ public class StorylineScene {
     }
 
     private void setupUI() {
-        // Background image
+
         InputStream imageStream = getClass().getResourceAsStream("/MAPCHAPTER.jpg");
         if (imageStream != null) {
-            BackgroundImage bgImage = new BackgroundImage(
-                    new Image(imageStream),
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundPosition.CENTER,
-                    new BackgroundSize(100, 100, true, true, true, true));
-            root.setBackground(new Background(bgImage));
+            // Försök ladda bilden
         } else {
-            root.setStyle(PINK_BG);
+            System.err.println("MAPCHAPTER.jpg kunde inte hittas i resources. Använder fallback-färg.");
+            this.setStyle(PINK_BG);  // <--- ROSA FÄRG AKTIVERAS HÄR
         }
 
         // Title
@@ -75,7 +65,7 @@ public class StorylineScene {
                 "-fx-font-weight: bold;");
         BorderPane.setAlignment(title, Pos.TOP_CENTER);
         BorderPane.setMargin(title, new Insets(20, 0, 0, 0));
-        root.setTop(title);
+        this.setTop(title);
 
         // Map container with chapter buttons
         StackPane mapContainer = new StackPane();
@@ -125,7 +115,7 @@ public class StorylineScene {
         }
 
         mapContainer.getChildren().add(buttonOverlay);
-        root.setCenter(mapContainer);
+        this.setCenter(mapContainer);
 
         // Back button
         Button backBtn = new Button("Back to homescreen");
@@ -137,7 +127,7 @@ public class StorylineScene {
         backBtn.setOnAction(e -> returnToHomescreen());
         BorderPane.setAlignment(backBtn, Pos.BOTTOM_CENTER);
         BorderPane.setMargin(backBtn, new Insets(0, 0, 20, 0));
-        root.setBottom(backBtn);
+        this.setBottom(backBtn);
     }
 
     public void unlockChapter(int chapterNumber) {
@@ -185,9 +175,9 @@ public class StorylineScene {
                 primaryStage.setScene(chapter2.getScene());
                 break;
             case 3:
-            Chapter3Scene chapter3 = new Chapter3Scene(primaryStage);
-            primaryStage.setScene(chapter3.getScene());
-            break;
+                Chapter3Scene chapter3 = new Chapter3Scene(primaryStage);
+                primaryStage.setScene(chapter3.getScene());
+                break;
 
             default:
                 // Show coming soon message
@@ -215,15 +205,13 @@ public class StorylineScene {
         }
     }
 
-    private void returnToHomescreen() {
-        StackPane root = (StackPane) this.getParent();
-        root.getChildren().remove(this);
+    public void returnToHomescreen() {
+        StackPane root = (StackPane) this.getParent(); // Get parent StackPane
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(200), this);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setOnFinished(e -> root.getChildren().remove(this));
+        fadeOut.play();
     }
 
-
-
-
-    public Scene getScene() {
-        return scene;
-    }
 }
