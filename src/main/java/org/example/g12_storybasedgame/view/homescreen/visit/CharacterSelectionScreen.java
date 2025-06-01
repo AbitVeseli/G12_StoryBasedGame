@@ -24,19 +24,24 @@ public class CharacterSelectionScreen extends BorderPane {
 
     private void setupUI() {
 //        this.setStyle("-fx-background-color: rgba(0, 0, 0, 0.9);");
+        HBox topBar = new HBox();
+        topBar.setPadding(new Insets(15));
+        topBar.setAlignment(Pos.TOP_LEFT);
+        topBar.setStyle("-fx-background-color: transparent");
+
 
         // Back button
         Button backBtn = new Button("← Back");
-        backBtn.setStyle("-fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: transparent;");
+        backBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px;");
         backBtn.setOnAction(e -> returnToHomeScreen());
 
-        HBox topBar = new HBox(backBtn);
-        topBar.setPadding(new Insets(15));
+        topBar.getChildren().add(backBtn);
         this.setTop(topBar);
 
+
         // Main content
-        VBox content = new VBox(30);
-        content.setPadding(new Insets(50));
+        VBox content = new VBox(20);
+        content.setPadding(new Insets(40));
         content.setAlignment(Pos.CENTER);
 
         Label title = new Label("Choose Your Love Interest");
