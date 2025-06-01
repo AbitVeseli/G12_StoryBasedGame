@@ -23,11 +23,11 @@ public class CharacterSelectionScreen extends BorderPane {
     }
 
     private void setupUI() {
-//        this.setStyle("-fx-background-color: rgba(0, 0, 0, 0.9);");
+       this.setStyle("-fx-background-color: rgba(0, 0, 0, 0.9);");
         HBox topBar = new HBox();
         topBar.setPadding(new Insets(15));
         topBar.setAlignment(Pos.TOP_LEFT);
-        topBar.setStyle("-fx-background-color: transparent");
+        topBar.setStyle("-fx-background-color: rgba(30, 30, 30, 0.8);");
 
 
         // Back button
