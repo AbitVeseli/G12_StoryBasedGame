@@ -116,26 +116,14 @@ public class Homescreen extends Application {
 
             if (buttonLabels[i].equals("Storyline")) {
                 btn.setOnAction(e -> {
-                    // Create fade out transition
-                    FadeTransition fadeOut = new FadeTransition(Duration.millis(300), root);
-                    fadeOut.setFromValue(1.0);
-                    fadeOut.setToValue(0.0);
+                    StorylineScene storylineOverlay = new StorylineScene(primaryStage);
 
-                    fadeOut.setOnFinished(event -> {
-                        // Create and show storyline scene
-                        StorylineScene storylineScene = new StorylineScene(primaryStage);
-                        Scene newScene = storylineScene.getScene();
-                        StackPane newRoot = (StackPane) newScene.getRoot();
-                        newRoot.setOpacity(0);
-                        primaryStage.setScene(newScene);
+                    // Set style directly on the overlay
+                    storylineOverlay.setStyle("-fx-background-color: linear-gradient(to bottom, #ffb6c1, #ff69b4);");
 
-                        // Fade in new scene
-                        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), newRoot);
-                        fadeIn.setFromValue(0.0);
-                        fadeIn.setToValue(1.0);
-                        fadeIn.play();
-                    });
-                    fadeOut.play();
+                    // Add to root StackPane
+                    StackPane storyline = (StackPane) primaryStage.getScene().getRoot();
+                    storyline.getChildren().add(storylineOverlay);
                 });
             } else if (buttonLabels[i].equals("Visit")) {
             btn.setOnAction(e -> {
