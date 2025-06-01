@@ -54,8 +54,6 @@ public class Chapter1Scene {
 //            }
 //        });
 
-
-
     }
 
     private void setupUI(Stage primaryStage) {
