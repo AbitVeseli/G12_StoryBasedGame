@@ -103,7 +103,7 @@ public class Homescreen extends Application {
         bottomBar.setStyle("-fx-alignment: center; -fx-background-color: transparent;");
         bottomBar.setPadding(new Insets(0));
 
-        String[] buttonLabels = {"Storyline", "Visit", "Clue", "???", "Play"};
+        String[] buttonLabels = {"Play", "Visit", "Clue", "???", "StoryLine"};
 
         Region leftSpacer = new Region();
         HBox.setHgrow(leftSpacer, Priority.ALWAYS);
@@ -112,7 +112,7 @@ public class Homescreen extends Application {
         for (int i = 0; i < buttonLabels.length; i++) {
             Button btn = createMainButton(buttonLabels[i]);
 
-            if (buttonLabels[i].equals("Storyline")) {
+            if (buttonLabels[i].equals("Play")) {
                 btn.setOnAction(e -> {
                     StorylineScene storylineScene = new StorylineScene(primaryStage);
                     primaryStage.setScene(storylineScene.getScene());
