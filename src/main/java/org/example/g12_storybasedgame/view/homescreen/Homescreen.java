@@ -60,7 +60,7 @@ public class Homescreen extends Application {
 
         // Set background image
         BackgroundImage bgImage = new BackgroundImage(
-                new Image(getClass().getResource("/ww.jpg").toExternalForm()),
+                new Image(getClass().getResource("/Homescreen.jpg").toExternalForm()),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
@@ -172,7 +172,7 @@ public class Homescreen extends Application {
         imageView.setFitWidth(40);
         imageView.setFitHeight(40);
         button.setGraphic(imageView);
-        button.setStyle("-fx-background-color: #ADD8E6;"
+        button.setStyle("-fx-background-color: purple;"
                 + "-fx-padding: 10;"
                 + "-fx-background-radius: 50%;"
                 + "-fx-pref-width: 40px;"
@@ -182,7 +182,7 @@ public class Homescreen extends Application {
 
     private Button createMainButton(String text) {
         Button btn = new Button(text);
-        btn.setStyle("-fx-background-color: magenta;"
+        btn.setStyle("-fx-background-color: purple;"
                 + "-fx-text-fill: white;"
                 + "-fx-font-size: 24px;"
                 + "-fx-font-weight: bold;"

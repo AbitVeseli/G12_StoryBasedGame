@@ -52,7 +52,7 @@ public class StorylineScene extends BorderPane {
         InputStream imageStream = getClass().getResourceAsStream("/MAPCHAPTER.jpg");
         if (imageStream != null) {
             Image backgroundImage = new Image(imageStream);
-            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
+            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
             BackgroundImage bgImage = new BackgroundImage(
                     backgroundImage,
                     BackgroundRepeat.NO_REPEAT,
