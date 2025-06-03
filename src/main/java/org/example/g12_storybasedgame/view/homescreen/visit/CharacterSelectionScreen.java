@@ -35,29 +35,62 @@ public class CharacterSelectionScreen extends BorderPane {
         this.setTop(topBar);
 
         // Main content
-        VBox content = new VBox(30);
-        content.setPadding(new Insets(50));
-        content.setAlignment(Pos.CENTER);
+            // Skapa en BorderPane som huvudlayout
+            BorderPane layout = new BorderPane();
 
-        Label title = new Label("Choose Your Love Interest");
-        title.setStyle("-fx-font-size: 32px; -fx-text-fill: white; -fx-font-weight: bold;");
+            // Skapa hem-knappen och placera den fast i övre högra hörnet
+            Button homeBtn = new Button("Back to homescreen");
+            homeBtn.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #C71585; -fx-background-radius: 10;");
+            homeBtn.setPadding(new Insets(8));
+            homeBtn.setOnAction(e -> returnToHomeScreen());
 
-        // Love interest grid
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(40);
-        grid.setVgap(40);
-        grid.setPadding(new Insets(20));
+            // Placera knappen i en högerjusterad behållare
+            HBox homeButtonBox = new HBox(homeBtn);
+            homeButtonBox.setAlignment(Pos.TOP_RIGHT);
+            homeButtonBox.setPadding(new Insets(0, 30, 0, 0)); // Justerar avstånd från kanterna
 
-        String[] loveInterests = {"LI1", "LI2", "LI3", "LI4"};
-        for (int i = 0; i < loveInterests.length; i++) {
-            String li = loveInterests[i];
-            VBox characterCard = createCharacterCard(li);
-            grid.add(characterCard, i % 2, i / 2);
-        }
+            // Skapa titeln och centrera den
+            Label title = new Label("Choose Your Love Interest");
+            title.setStyle("-fx-font-size: 32px; -fx-text-fill: white; -fx-font-weight: bold;");
 
-        content.getChildren().addAll(title, grid);
-        this.setCenter(content);
+            // Centrera titeln oberoende av skärmstorlek
+            VBox titleBox = new VBox(title);
+            titleBox.setAlignment(Pos.CENTER);
+            titleBox.setPadding(new Insets(0, 0, 0, 0));
+
+            // Skapa en vertikal layout som innehåller både hemknappen och titeln
+            VBox topContent = new VBox();
+            topContent.setAlignment(Pos.TOP_CENTER);
+            topContent.getChildren().addAll(homeButtonBox, titleBox);
+
+            // Lägg in titeln och hem-knappen i toppen av BorderPane
+            layout.setTop(topContent);
+
+            // Skapa huvudlayout för innehållet
+            VBox content = new VBox(20);
+            content.setPadding(new Insets(20));
+            content.setAlignment(Pos.CENTER);
+
+            // Skapa rutnätet för kärleksintressen
+            GridPane grid = new GridPane();
+            grid.setAlignment(Pos.CENTER);
+            grid.setHgap(20);
+            grid.setVgap(20);
+            grid.setPadding(new Insets(20));
+
+            String[] loveInterests = {"LI1", "LI2", "LI3", "LI4"};
+            for (int i = 0; i < loveInterests.length; i++) {
+                String li = loveInterests[i];
+                VBox characterCard = createCharacterCard(li);
+                grid.add(characterCard, i % 2, i / 2);
+            }
+
+            content.getChildren().add(grid);
+            layout.setCenter(content);
+
+            // Lägg till huvudlayouten i scenen
+            this.setCenter(layout);
+
     }
 
     private VBox createCharacterCard(String character) {

@@ -140,9 +140,9 @@ public class Chapter1Scene {
                 new String[]{"", "You suddenly wake up from sleep because you hear someone calling for you and see a golden bird."},
                 new String[]{"Nugari", "Abita wake up!! You're going to be late to school!!"},
                 new String[]{"Abita", "Ugh, Nugari you're being too loud. Give me 5 more minutes..."},
-                new String[]{"Abita (Inner monologue)", "Wow, the weather's so nice today, a nice breeze and the sun is out, I have a good feeling about today. I should go look for Mara!"},
+                new String[]{"Abita", " (Inner monologue) Wow, the weather's so nice today, a nice breeze and the sun is out, I have a good feeling about today. I should go look for Mara!"},
                 new String[]{" ", "*BAM/CRASH*"},
-                new String[]{"???", "Huff, are your eyes only for decoration? Watch where you're going!"}
+                new String[]{"Judas", "Huff, are your eyes only for decoration? Watch where you're going!"}
         ));
     }
 
@@ -169,18 +169,18 @@ public class Chapter1Scene {
             case 1 -> {
                 relationshipPoints += 1;
                 messageQueue.add(new String[]{"Abita", "I’m sorry, I didn’t mean to bump into you."});
-                messageQueue.add(new String[]{"???", "Watch where you're going!"});
+                messageQueue.add(new String[]{"Judas", "Watch where you're going!"});
             }
             case 2 -> {
                 relationshipPoints -= 1;
                 messageQueue.add(new String[]{"", "You continue walking..."});
-                messageQueue.add(new String[]{"???", "HEY!!"});
+                messageQueue.add(new String[]{"Judas", "HEY!!"});
             }
             case 3 -> {
                 relationshipPoints -= 2;
                 messageQueue.add(new String[]{"Abita", "I was here the whole time, are your eyes only for decoration?"});
                 messageQueue.add(new String[]{"", "You walk away."});
-                messageQueue.add(new String[]{"???", "Wha..."});
+                messageQueue.add(new String[]{"Judas", "Wha..."});
             }
         }
 
@@ -194,7 +194,7 @@ public class Chapter1Scene {
                 new String[]{"", "In a bad mood you enter the classroom and hear the chatter from your fellow classmates."},
                 new String[]{"", "*Chatter* *Chatter*"},
 
-                new String[]{"Abita (Inner monologue)", "Why are there so many people here today? Let's find a place to sit first."},
+                new String[]{"Abita", " (Inner monologue)Why are there so many people here today? Let's find a place to sit first."},
                 new String[]{"", "You see a group of people surround Dylan T. Ravenwood."},
                 new String[]{"", "Dylan is a popular kid and comes from a noble ancestry, admired by all. "},
                 new String[]{"", "From a distance you hear their conversations."},
@@ -203,9 +203,9 @@ public class Chapter1Scene {
                 new String[]{"Fanboy 1", "Of course he is. He's the best at everything!"},
                 new String[]{"Dylan", "Now, now guys, I'm flattered, but I'm not that special."},
                 new String[]{"Both fans in unsion", "NO! Your looks, your brains, your FAMILY. You're superior in every way!!"},
-                new String[]{"Abita (Inner monologue)", "I feel eyes looking at me in the back of my head."},
+                new String[]{"Abita", " (Inner monologue) I feel eyes looking at me in the back of my head."},
                 new String[]{"", "You turn around."},
-                new String[]{"Abita (Inner monologue)", "Why is Dylan T. Ravenwood looking at me?"}
+                new String[]{"Abita", " (Inner monologue) Why is Dylan T. Ravenwood looking at me?"}
         ));
 
         // Restore dialog UI
@@ -387,7 +387,7 @@ public class Chapter1Scene {
         }
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita (Inner monologue)", "Ugh, that was so uncomfortable. Let's find a familiar face instead. Oh! It's Emilio!"},
+                new String[]{"Abita", " (Inner monologue) Ugh, that was so uncomfortable. Let's find a familiar face instead. Oh! It's Emilio!"},
                 new String[]{"", "You sit down next to Emilio Valmont. You've sat next to him since your first day at school and you share a comfortable and friendly bond with him despite his scary demeanor."},
                 new String[]{"Abita", "Valmont, have you heard from Mara?"},
                 new String[]{"Emilio", "Hey Abita, lovely to see you too, how are you?"},
@@ -434,7 +434,7 @@ public class Chapter1Scene {
 
         messageQueue.addAll(Arrays.asList(
                 new String[]{"Emilio", "We're about to find out."},
-                new String[]{"Abita (Inner monologue)", "Mara where the hell are you?"},
+                new String[]{"Abita", " (Inner monologue) Mara where the hell are you?"},
                 new String[]{"", "The conversations calm down as the headmistress enters and heads toward the podium."},
                 new String[]{" ", "*Click* *Clack* *Click* *Clack* *Click* *Clack*"},
                 new String[]{"", "Her shoes can be heard loudly."},

@@ -129,11 +129,11 @@ public class Chapter2Scene {
 
         messageQueue.addAll(Arrays.asList(
                 new String[]{" ", "BZZT BZZT"},
-                new String[]{"Abita (Inner monologue)", "Come on, Mara. Pick up. Pick up. Please pick up."},
+                new String[]{"Abita", " (Inner monologue) Come on, Mara. Pick up. Pick up. Please pick up."},
                 new String[]{" ", "You frantically tap out another message to Mara."},
                 new String[]{" ", "Text Message Sent: \"Hey! Where are you? You didn't answer yesterday and now you're not in class. Text me back, okay?\""},
                 new String[]{" ", "No reply."},
-                new String[]{"Abita (Inner monologue)", "This isn't like her. She always texts back, even if it's just an emoji. Something's wrong."},
+                new String[]{"Abita", " (Inner monologue) This isn't like her. She always texts back, even if it's just an emoji. Something's wrong."},
                 new String[]{" ", "Shoes tapping rapidly on tile floor"},
                 new String[]{" ", "You slip out of the classroom before the whispers can catch up to you."},
                 new String[]{" ", "Before Emilio can even say your name, you're halfway down the corridor."},
@@ -158,7 +158,7 @@ public class Chapter2Scene {
         currentSection = 3;
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita (Inner monologue)", "That was so weird, why did he look at me? Anyway, I just need to check. Maybe she overslept. Maybe she's sick. Maybe she"},
+                new String[]{"Abita", " (Inner monologue) That was so weird, why did he look at me? Anyway, I just need to check. Maybe she overslept. Maybe she's sick. Maybe she"},
                 new String[]{" ", "Your thoughts freeze mid-sentence as you run back to your dorms and up the stairs."},
                 new String[]{" ", "Yellow police tape. Uniformed officers. Investigators with gloves."},
                 new String[]{" ", "Everything slows down. A low ringing fills your ears. Someone is talking, but the words blur together."},
@@ -166,15 +166,15 @@ public class Chapter2Scene {
                 new String[]{"Investigator", "Female student, early-twenties... Signs of struggle... Possible time of death... late last night..."},
                 new String[]{" ", "You can't breath. You can't think. You try to step forward again."},
                 new String[]{"Officer 2", "I said back up! This isn't for students."},
-                new String[]{"Abita (Inner monologue)", "This can't be real. This isn't happening."},
+                new String[]{"Abita", " (Inner monologue) This can't be real. This isn't happening."},
                 new String[]{" ", "You manage to catch a glimpse through the half-open dorm door. It's Mara's room."},
                 new String[]{" ", "Photo frames knocked over. A broken lamp. A familiar scarf on the floor."},
                 new String[]{" ", "You stumble back. The breath in your lungs feels too sharp, too cold."},
-                new String[]{"Abita (Inner monologue)", "That scarf. That's hers. That's her favorite one. She wore it the last time I saw her."},
+                new String[]{"Abita", " (Inner monologue) That scarf. That's hers. That's her favorite one. She wore it the last time I saw her."},
                 new String[]{" ", "You turn around, legs trembling beneath you. Somehow, you make it back to your room."},
                 new String[]{" ", "Click. Door closes. Lock turns."},
                 new String[]{" ", "You drop your phone on the bed and sit there, unmoving."},
-                new String[]{"Abita (Inner monologue)", "She's gone. She's really gone. Why didn't I check on her yesterday? Why didn't I feel it?"},
+                new String[]{"Abita", " (Inner monologue) She's gone. She's really gone. Why didn't I check on her yesterday? Why didn't I feel it?"},
                 new String[]{" ", "Tears slide down Abita's cheeks in silence."},
                 new String[]{"Notification sound", "Ding"},
                 new String[]{" ", "You glance at your phone."},
@@ -192,7 +192,7 @@ public class Chapter2Scene {
         currentSection = 3;
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita (Inner monologue)", "That was so weird, why did he look at me? Anyway, I just need to check. Maybe she overslept. Maybe she's sick. Maybe she"},
+                new String[]{"Abita", " (Inner monologue) That was so weird, why did he look at me? Anyway, I just need to check. Maybe she overslept. Maybe she's sick. Maybe she"},
                 new String[]{" ", "Your thoughts freeze mid-sentence as you run back to your dorms and up the stairs."},
                 new String[]{" ", "Yellow police tape. Uniformed officers. Investigators with gloves."},
                 new String[]{" ", "Everything slows down. A low ringing fills your ears. Someone is talking, but the words blur together."},
@@ -200,15 +200,15 @@ public class Chapter2Scene {
                 new String[]{"Investigator", "Female student, early-twenties... Signs of struggle... Possible time of death... late last night..."},
                 new String[]{" ", "You can't breath. You can't think. You try to step forward again."},
                 new String[]{"Officer 2", "I said back up! This isn't for students."},
-                new String[]{"Abita (Inner monologue)", "This can't be real. This isn't happening."},
+                new String[]{"Abita", " (Inner monologue) This can't be real. This isn't happening."},
                 new String[]{" ", "You manage to catch a glimpse through the half-open dorm door. It's Mara's room."},
                 new String[]{" ", "Photo frames knocked over. A broken lamp. A familiar scarf on the floor."},
                 new String[]{" ", "You stumble back. The breath in your lungs feels too sharp, too cold."},
-                new String[]{"Abita (Inner monologue)", "That scarf. That's hers. That's her favorite one. She wore it the last time I saw her."},
+                new String[]{"Abita", "  (Inner monologue) That scarf. That's hers. That's her favorite one. She wore it the last time I saw her."},
                 new String[]{" ", "You turn around, legs trembling beneath you. Somehow, you make it back to your room."},
                 new String[]{" ", "Click. Door closes. Lock turns."},
                 new String[]{" ", "You drop your phone on the bed and sit there, unmoving."},
-                new String[]{"Abita (Inner monologue)", "She's gone. She's really gone. Why didn't I check on her yesterday? Why didn't I feel it?"},
+                new String[]{"Abita", " (Inner monologue) She's gone. She's really gone. Why didn't I check on her yesterday? Why didn't I feel it?"},
                 new String[]{" ", "Tears slide down Abita's cheeks in silence."},
                 new String[]{"Notification sound ", "Ding"},
                 new String[]{" ", "You glance at your phone."},
@@ -248,13 +248,13 @@ public class Chapter2Scene {
             }
             case 3 -> {
                 relationshipPoints -= 2;
-                messageQueue.add(new String[]{" ", "(You don't reply)"});
+                messageQueue.add(new String[]{"Abita", "(You don't reply)"});
             }
         }
 
         messageQueue.addAll(Arrays.asList(
                 new String[]{" ", "You curl up on the bed, clutching your pillow."},
-                new String[]{"Abita (Inner monologue)", "This isn't just a tragedy. This is personal. Someone killed Mara. And I'm going to find out who."},
+                new String[]{"Abita", " (Inner monologue) This isn't just a tragedy. This is personal. Someone killed Mara. And I'm going to find out who."},
                 new String[]{" ", "Scene fades to black"}
         ));
 
@@ -285,8 +285,8 @@ public class Chapter2Scene {
                 new String[]{"Mara", "Please... stay alive."},
                 new String[]{" ", "Mara's figure flickers and vanishes. The room is empty. Cold."},
                 new String[]{" ", "Abita wakes up gasping, drenched in sweat."},
-                new String[]{"Abita (Inner monologue)", "That wasn't just a dream... She was terrified."},
-                new String[]{"Abita (Inner monologue)", "What am I supposed to do now?"}
+                new String[]{"Abita", " (Inner monologue) That wasn't just a dream... She was terrified."},
+                new String[]{"Abita", " (Inner monologue) What am I supposed to do now?"}
         ));
 
         dialogContainer.getChildren().clear();
@@ -301,7 +301,7 @@ public class Chapter2Scene {
         messageQueue.addAll(Arrays.asList(
                 new String[]{" ", "It's the next morning."},
                 new String[]{" ", "The sunlight feels thinner somehow. The memory of Mara's voice lingers."},
-                new String[]{"Abita (Inner monologue)", "My head hurts... I have to make a decision..."}
+                new String[]{"Abita", " (Inner monologue) My head hurts... I have to make a decision..."}
         ));
 
         dialogContainer.getChildren().clear();

@@ -123,7 +123,7 @@ public class Chapter3Scene {
         messageQueue.addAll(Arrays.asList(
                 new String[]{"", "The next day you rush to school to see whether new information has been released."},
                 new String[]{"", "Surprisingly, everyone around you appears to be unbothered by the previous day's events."},
-                new String[]{"Abita (Inner monologue)", "What the hell...? Is this a joke? Mara's gone. She died here. And everyone's just... pretending like it's a normal day?"},
+                new String[]{"Abita", " (Inner monologue) What the hell...? Is this a joke? Mara's gone. She died here. And everyone's just... pretending like it's a normal day?"},
                 new String[]{"", "The teacher walks in but someone else walks in after her and stops beside her."},
                 new String[]{"Teacher", "Class, attention please! We have a new transfer student joining us today. Please welcome Benny Blade Vi."},
                 new String[]{"Benny", "Yo. Nice to meet you all."},
@@ -131,7 +131,7 @@ public class Chapter3Scene {
                 new String[]{"Female student", "Who is that?"},
                 new String[]{"Male student", "Do you see his cool eyes?"},
                 new String[]{"Female student", "He's kinda hot… But why now?"},
-                new String[]{"Abita (Inner monologue)", "A transfer student? The day after a murder? Not even a full 24 hours have passed. That's more than suspicious…"},
+                new String[]{"Abita", " (Inner monologue) A transfer student? The day after a murder? Not even a full 24 hours have passed. That's more than suspicious…"},
                 new String[]{"", "You glance over at your classmates. Emilio is staring at the new guy, brow furrowed. Judas remains slouched in his seat, unfazed. Dylan meets your eyes and offers a smooth smirk."}
         ));
     }
@@ -160,15 +160,15 @@ public class Chapter3Scene {
         }
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita (Inner monologue)", "That look again. He's watching me like he knows something..."},
-                new String[]{"Abita (Inner monologue)", "Fine. Two can play that game."},
+                new String[]{"Abita", " (Inner monologue) That look again. He's watching me like he knows something..."},
+                new String[]{"Abita", " (Inner monologue) Fine. Two can play that game."},
                 new String[]{"", "You look away from Dylan and move your attention toward Emilio."},
                 new String[]{"Abita", "Hey, Valmont."},
                 new String[]{"Emilio", "Hey. You okay? You don't look like you slept a lot."},
                 new String[]{"Abita", "I didn't. I… I had a dream. A weird one. Mara came to me in that dream."},
                 new String[]{"Emilio", "Mara…?"},
                 new String[]{"Abita", "She told me to stop looking for her killer. She looked... terrified."},
-                new String[]{"Emilio (hesitant)", "Maybe... Maybe you should listen to her."}
+                new String[]{"Emilio", "Maybe... Maybe you should listen to her."}
         ));
 
         dialogContainer.getChildren().clear();
@@ -202,14 +202,14 @@ public class Chapter3Scene {
                 new String[]{"Teacher", "Alright class, settle down. You can talk to him later and make him feel welcome here. Let's begin the class."},
                 new String[]{"", "Suspicious of the new transfer student and filled with a need to avenge your friend you set out to uncover the mysteries surrounding her death."},
                 new String[]{"", "The investigation begins. You start gathering clues after class, try talking to potential witnesses but they don't seem to have any useful information."},
-                new String[]{"Abita (Inner monologue)", "I've asked a lot of people but something seems off about everyone lately."},
+                new String[]{"Abita", " (Inner monologue) I've asked a lot of people but something seems off about everyone lately."},
                 new String[]{"", "While investigating you find yourself in the library. You see Emilio there and decide to start talking to him."},
                 new String[]{"Abita", "Hey Emilio. You seemed nervous this morning. What's going on?"},
                 new String[]{"Emilio", "Nervous? Me? Nah, I'm just... bad with new people."},
                 new String[]{"Abita", "Are you sure that's it?"},
                 new String[]{"Emilio", "No, it's about Mara and other things.. Are still digging, aren't you?"},
                 new String[]{"Abita", "Of course I am. I know what she meant to me. And you.. You cared about her too, didn't you?"},
-                new String[]{"Emilio (lowers his voice)", "I do but I heard something the night she died. But I don't want you getting dragged deeper into this. It's dangerous."},
+                new String[]{"Emilio", "I do but I heard something the night she died. But I don't want you getting dragged deeper into this. It's dangerous."},
                 new String[]{"Abita", "But I have to know the truth of what happened to Mara."}
         ));
 
@@ -288,14 +288,14 @@ public class Chapter3Scene {
             case 3 -> {
                 relationshipPoints -= 1;
                 messageQueue.add(new String[]{"Abita", "You think you can scare me into giving up? I'm not afraid of you, Benny. I'll find out what's going on, even if it means crossing every line you've set."});
-                messageQueue.add(new String[]{"Benny (smirks)", "You don't get it, do you? You're playing a dangerous game, and sooner or later, you'll find out just how much danger you're really in. But if you think you can handle it, then go ahead. Just don't say I didn't warn you."});
+                messageQueue.add(new String[]{"Benny", "You don't get it, do you? You're playing a dangerous game, and sooner or later, you'll find out just how much danger you're really in. But if you think you can handle it, then go ahead. Just don't say I didn't warn you."});
                 messageQueue.add(new String[]{"Abita", "Thanks, but I'm not here to play nice. I'll find out what's going on with or without your help."});
-                messageQueue.add(new String[]{"Benny (smirks again)", "Just try not to end up in the same place as your friend. These are dangerous times."});
+                messageQueue.add(new String[]{"Benny", "Just try not to end up in the same place as your friend. These are dangerous times."});
             }
         }
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Abita (Inner monologue)", "He's trying to intimidate me. But it's not working. He knows more than he's letting on, and I'm going to find out what that is."},
+                new String[]{"Abita", " (Inner monologue) He's trying to intimidate me. But it's not working. He knows more than he's letting on, and I'm going to find out what that is."},
                 new String[]{"", "You walk outside and find Judas leaning against a brick wall, half in shadow. His arms are crossed, expression unreadable. His eyes flick briefly toward you."},
                 new String[]{"Abita", "You haven't said anything since Mara died. Don't you care?"},
                 new String[]{"Judas", "Caring doesn't bring the dead back. And asking the wrong questions gets more people killed."}
@@ -346,7 +346,7 @@ public class Chapter3Scene {
                 new String[]{"Judas", "Some truths don't stay buried without reason."},
                 new String[]{"", "You watch Judas disappear around the corner, his words lingering in your mind like smoke. Shaking it off, you make your way toward the courtyard."},
                 new String[]{"", "Before you can catch your breath, a voice cuts in smoothly beside you. It's Dylan."},
-                new String[]{"Dylan (grinning)", "Well, well… Detective Vesela. Heard you've been snooping around."},
+                new String[]{"Dylan", "Well, well… Detective Vesela. Heard you've been snooping around."},
                 new String[]{"Abita", "Are you surprised? Or… worried?"}
         ));
 
@@ -388,7 +388,7 @@ public class Chapter3Scene {
         }
 
         messageQueue.addAll(Arrays.asList(
-                new String[]{"Dylan (amused, with a hint of menace)", "You're bold. That might just get you killed, you know. Or… worse, getting noticed by the wrong people."},
+                new String[]{"Dylan", " (amused, with a hint of menace) You're bold. That might just get you killed, you know. Or… worse, getting noticed by the wrong people."},
                 new String[]{"", "You turn away from Dylan, his words echoing in your mind. With your steps firm and keeping your voice steady. You whispering to yourself"},
                 new String[]{"Abita", "Too late for that. I'm already in this… and I'm not backing down now."}
         ));
