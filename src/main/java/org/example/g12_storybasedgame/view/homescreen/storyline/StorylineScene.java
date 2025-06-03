@@ -51,11 +51,21 @@ public class StorylineScene extends BorderPane {
 
         InputStream imageStream = getClass().getResourceAsStream("/MAPCHAPTER.jpg");
         if (imageStream != null) {
-            // Försök ladda bilden
+            Image backgroundImage = new Image(imageStream);
+            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
+            BackgroundImage bgImage = new BackgroundImage(
+                    backgroundImage,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.CENTER,
+                    backgroundSize
+            );
+            this.setBackground(new Background(bgImage));
         } else {
             System.err.println("MAPCHAPTER.jpg kunde inte hittas i resources. Använder fallback-färg.");
-            this.setStyle(PINK_BG);  // <--- ROSA FÄRG AKTIVERAS HÄR
+            this.setStyle(PINK_BG);
         }
+
 
         // Title
         Label title = new Label("Storyline Map");
@@ -206,12 +216,12 @@ public class StorylineScene extends BorderPane {
     }
 
     public void returnToHomescreen() {
-        StackPane root = (StackPane) this.getParent(); // Get parent StackPane
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(200), this);
-        fadeOut.setFromValue(1);
-        fadeOut.setToValue(0);
-        fadeOut.setOnFinished(e -> root.getChildren().remove(this));
-        fadeOut.play();
+        Homescreen homescreen = new Homescreen();
+        try {
+            homescreen.start(primaryStage);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public Scene asScene() {
