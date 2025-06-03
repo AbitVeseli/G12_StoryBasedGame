@@ -214,4 +214,11 @@ public class StorylineScene extends BorderPane {
         fadeOut.play();
     }
 
+    public Scene asScene() {
+        if (scene == null) {
+            scene = new Scene(this, 1024, 619); // Anpassa storlek om du vill
+        }
+        return scene;
+    }
+
 }
