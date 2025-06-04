@@ -42,7 +42,9 @@ public class StorylineScene extends BorderPane {
         unlockedChapters.put(1, true); // Chapter 1 always unlocked
         unlockedChapters.put(2, true); //ta bort sen och byt loopen från 3 till 2
         unlockedChapters.put(3, true);
-        for (int i = 4; i <= 6; i++) {
+        unlockedChapters.put(4, true);
+        unlockedChapters.put(5, true);
+        for (int i = 6; i <= 6; i++) {
             unlockedChapters.put(i, false);
         }
     }
@@ -52,7 +54,7 @@ public class StorylineScene extends BorderPane {
         InputStream imageStream = getClass().getResourceAsStream("/MAPCHAPTER.jpg");
         if (imageStream != null) {
             Image backgroundImage = new Image(imageStream);
-            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
             BackgroundImage bgImage = new BackgroundImage(
                     backgroundImage,
                     BackgroundRepeat.NO_REPEAT,
@@ -187,6 +189,14 @@ public class StorylineScene extends BorderPane {
             case 3:
                 Chapter3Scene chapter3 = new Chapter3Scene(primaryStage);
                 primaryStage.setScene(chapter3.getScene());
+                break;
+            case 4:
+                Chapter4Scene chapter4 = new Chapter4Scene(primaryStage);
+                primaryStage.setScene(chapter4.getScene());
+                break;
+            case 5:
+                Chapter5Scene chapter5 = new Chapter5Scene(primaryStage);
+                primaryStage.setScene(chapter5.getScene());
                 break;
 
             default:

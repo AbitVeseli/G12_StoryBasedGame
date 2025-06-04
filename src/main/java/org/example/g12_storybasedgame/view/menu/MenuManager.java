@@ -362,7 +362,7 @@ public class MenuManager extends Application {
     public void showMainMenu() {
         rootContainer.getChildren().clear();
 
-        Label welcomeLabel = new Label("Welcome, " + users.keySet().iterator().next() + "!");
+        Label welcomeLabel = new Label("Welcome player!");
         welcomeLabel.setStyle("-fx-font-size: 2em; -fx-text-fill: white;");
 
         Button startGameButton = new Button("Start Game");
@@ -376,7 +376,7 @@ public class MenuManager extends Application {
         VBox layout = new VBox(30);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(welcomeLabel, startGameButton);
-        layout.setStyle("-fx-background-color: rgba(0,0,0,0.8);");
+        layout.setStyle("-fx-background-color: purple");
 
         rootContainer.getChildren().add(layout);
     }
