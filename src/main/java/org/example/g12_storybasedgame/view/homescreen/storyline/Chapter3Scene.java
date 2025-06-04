@@ -616,7 +616,7 @@ public class Chapter3Scene {
         loadingPane.setStyle("-fx-background-color: " + PINK_BG + ";");
 
         VBox loadingContent = new VBox(20);
-        loadingContent.setAlignment(Pos.CENTER_LEFT);
+        loadingContent.setAlignment(Pos.CENTER);
 
         Label loadingLabel = new Label("Loading Chapter 4...");
         loadingLabel.setStyle("-fx-font-size: 32px; " +
@@ -632,12 +632,38 @@ public class Chapter3Scene {
 
         root.setCenter(loadingPane);
 
+        // Create the loading timeline
         Timeline loadingTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    // First show loading progress
+                    loadingLabel.setText("Almost there...");
+                }),
                 new KeyFrame(Duration.seconds(2), e -> {
-                    loadingLabel.setText("Chapter 4 is not implemented yet");
-                    progress.setVisible(false);
-                }
-                ));
+                    try {
+                        // Attempt to load Chapter 4
+                        Chapter4Scene chapter4 = new Chapter4Scene(primaryStage);
+                        primaryStage.setScene(chapter4.getScene());
+                    } catch (Exception ex) {
+                        // Fallback if Chapter4 isn't available
+                        loadingLabel.setText("Chapter 4 is coming soon!");
+                        progress.setVisible(false);
+
+                        // Add a back button
+                        Button backButton = new Button("Return to Storyline Map");
+                        backButton.setStyle("-fx-font-size: 18px; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-background-color: " + DARK_PINK + "; " +
+                                "-fx-padding: 10 20; " +
+                                "-fx-background-radius: 20;");
+                        backButton.setOnAction(event -> {
+                            StorylineScene storylineScene = new StorylineScene(primaryStage);
+                            primaryStage.setScene(storylineScene.getScene());
+                        });
+
+                        loadingContent.getChildren().add(backButton);
+                    }
+                })
+        );
         loadingTimeline.play();
     }
 
