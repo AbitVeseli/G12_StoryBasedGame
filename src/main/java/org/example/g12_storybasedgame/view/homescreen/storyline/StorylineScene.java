@@ -42,9 +42,14 @@ public class StorylineScene extends BorderPane {
         unlockedChapters.put(1, true); // Chapter 1 always unlocked
         unlockedChapters.put(2, true); //ta bort sen och byt loopen från 3 till 2
         unlockedChapters.put(3, true);
-        for (int i = 4; i <= 6; i++) {
-            unlockedChapters.put(i, false);
-        }
+        unlockedChapters.put(4, true);
+        unlockedChapters.put(5, true);
+        unlockedChapters.put(6, true);
+        unlockedChapters.put(7, true);
+        unlockedChapters.put(8, true);
+//        for (int i = 4; i <= 6; i++) {
+//            unlockedChapters.put(i, false);
+//        }
     }
 
     private void setupUI() {
@@ -93,9 +98,11 @@ public class StorylineScene extends BorderPane {
         chapterPositions.put(4, new Point2D(0.70, 0.55));
         chapterPositions.put(5, new Point2D(0.85, 0.75));
         chapterPositions.put(6, new Point2D(0.50, 0.80));
+        chapterPositions.put(7, new Point2D(0.20, 0.50));
+        chapterPositions.put(8, new Point2D(0.35, 0.20));
 
         // Create chapter buttons
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 1; i <= 8; i++) {
             Button chapterBtn = createChapterButton(i);
             chapterBtn.layoutXProperty().bind(mapContainer.widthProperty().multiply(chapterPositions.get(i).getX()));
             chapterBtn.layoutYProperty().bind(mapContainer.heightProperty().multiply(chapterPositions.get(i).getY()));
@@ -103,7 +110,7 @@ public class StorylineScene extends BorderPane {
         }
 
         // Connection lines between chapters
-        for (int i = 2; i <= 6; i++) {
+        for (int i = 2; i <= 8; i++) {
             Line connectionLine = new Line();
             connectionLine.setStroke(Color.web(DARK_PINK));
             connectionLine.setStrokeWidth(3);
@@ -188,6 +195,15 @@ public class StorylineScene extends BorderPane {
                 Chapter3Scene chapter3 = new Chapter3Scene(primaryStage);
                 primaryStage.setScene(chapter3.getScene());
                 break;
+            case 4:
+                Chapter4Scene chapter4 = new Chapter4Scene(primaryStage);
+                primaryStage.setScene(chapter4.getScene());
+                break;
+            case 5:
+                Chapter5Scene chapter5 = new Chapter5Scene(primaryStage);
+                primaryStage.setScene(chapter5.getScene());
+                break;
+
 
             default:
                 // Show coming soon message
