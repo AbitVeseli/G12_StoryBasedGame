@@ -234,8 +234,8 @@ public class Chapter5Scene {
 
         dialogContainer.getChildren().clear();
         showChoiceButtons(
-                new String[]{"Route 1", "Follow Judas"},
-                new String[]{"Route 2", "Follow Dylan"}
+                new String[]{"Final Choice 1", "Follow Judas"},
+                new String[]{"Final Choice 2", "Follow Dylan"}
         );
     }
 
@@ -254,7 +254,8 @@ public class Chapter5Scene {
         HBox buttonRow = new HBox(15);
         buttonRow.setAlignment(Pos.CENTER);
 
-        for (String[] option : options) {
+        for (int i = 0; i < options.length; i++) {
+            String[] option = options[i];
             Button btn = new Button(option[1]);
             btn.setStyle("-fx-font-size: 16px; " +
                     "-fx-text-fill: white; " +
@@ -266,7 +267,7 @@ public class Chapter5Scene {
                     "-fx-background-radius: 20;");
             btn.setEffect(new javafx.scene.effect.DropShadow(5, Color.PINK));
 
-            final int choice = Integer.parseInt(option[0].substring(7, 8));
+            final int choice = i + 1; // Use index + 1 as the choice number
             btn.setOnAction(e -> handleChoice(choice));
 
             btn.setOnMouseEntered(e -> btn.setStyle("-fx-font-size: 16px; " +
@@ -427,25 +428,93 @@ public class Chapter5Scene {
     }
 
     private void handleFinalChoice(int choice) {
+        // Clear previous elements in dialogContainer
         dialogContainer.getChildren().clear();
 
+        // Create a new root pane for the final choice
+        StackPane finalChoiceRoot = new StackPane();
+        finalChoiceRoot.setStyle(PINK_BG);
+        finalChoiceRoot.setAlignment(Pos.CENTER);
+
+        // Create choice box layout
         VBox choiceBox = new VBox(20);
         choiceBox.setAlignment(Pos.CENTER);
-        choiceBox.setStyle("-fx-background-color: rgba(255,214,224,0.9); " +
+        choiceBox.setStyle("-fx-background-color: rgba(255,255,255,0.9); " +
                 "-fx-background-radius: 15; " +
                 "-fx-padding: 40;");
+        choiceBox.setMaxWidth(600);
 
+        // Title label for choice section
         Label choiceLabel = new Label("Your choice will change everything...");
         choiceLabel.setStyle("-fx-font-size: 24px; " +
                 "-fx-text-fill: " + TEXT_COLOR + "; " +
                 "-fx-font-family: 'Arial Rounded MT Bold';");
+        choiceLabel.setWrapText(true);
+        choiceLabel.setTextAlignment(TextAlignment.CENTER);
+
+        // Create choice buttons
+        Button option1 = new Button("Follow Judas");
+        Button option2 = new Button("Follow Dylan");
+
+        // Style buttons
+        String buttonStyle = "-fx-font-size: 18px; " +
+                "-fx-text-fill: white; " +
+                "-fx-background-color: " + DARK_PINK + "; " +
+                "-fx-padding: 15 30; " +
+                "-fx-background-radius: 20; " +
+                "-fx-min-width: 200px;";
+
+        option1.setStyle(buttonStyle);
+        option2.setStyle(buttonStyle);
+
+        // Add hover effects
+        option1.setOnMouseEntered(e -> option1.setStyle(buttonStyle + "-fx-background-color: #FF6B8B;"));
+        option1.setOnMouseExited(e -> option1.setStyle(buttonStyle));
+        option2.setOnMouseEntered(e -> option2.setStyle(buttonStyle + "-fx-background-color: #FF6B8B;"));
+        option2.setOnMouseExited(e -> option2.setStyle(buttonStyle));
+
+        // Add action handlers
+        option1.setOnAction(e -> changeChapter(1));
+        option2.setOnAction(e -> changeChapter(2));
+
+        // Add choices to choiceBox
+        choiceBox.getChildren().addAll(choiceLabel, option1, option2);
+
+        // Add to root and center
+        finalChoiceRoot.getChildren().add(choiceBox);
+
+        // Replace the entire scene content
+        root.setCenter(finalChoiceRoot);
+        root.setBottom(null); // Remove the dialog container
+
+        // Force UI refresh
+        root.requestLayout();
+    }
+
+
+    // Hanterar övergång till rätt kapitel efter val
+    private void changeChapter(int choice) {
+        // Show loading animation before transitioning to the next scene
+        VBox loadingBox = new VBox(20);
+        loadingBox.setAlignment(Pos.CENTER);
+        loadingBox.setStyle("-fx-background-color: rgba(255,214,224,0.9); " +
+                "-fx-background-radius: 15; " +
+                "-fx-padding: 40;");
+
+        Label loadingLabel = new Label("Loading next chapter...");
+        loadingLabel.setStyle("-fx-font-size: 24px; " +
+                "-fx-text-fill: " + TEXT_COLOR + "; " +
+                "-fx-font-family: 'Arial Rounded MT Bold';");
 
         ProgressIndicator progress = new ProgressIndicator();
-        progress.setStyle("-fx-progress-color: " + DARK_PINK + ";");
         progress.setPrefSize(50, 50);
 
-        choiceBox.getChildren().addAll(choiceLabel, progress);
-        dialogContainer.getChildren().add(choiceBox);
+        loadingBox.getChildren().addAll(loadingLabel, progress);
+
+        // Replace UI with loading screen
+        dialogContainer.getChildren().clear();
+        dialogContainer.getChildren().add(loadingBox);
+        dialogContainer.requestLayout(); // Ensure UI updates
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), e -> {
@@ -460,6 +529,8 @@ public class Chapter5Scene {
         );
         timeline.play();
     }
+
+
 
     private void showCharacterImage(String imagePath) {
         try {
