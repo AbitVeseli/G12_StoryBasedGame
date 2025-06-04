@@ -427,6 +427,7 @@ public class Chapter5Scene {
     }
 
     private void handleFinalChoice(int choice) {
+        currentSection = 10;
         dialogContainer.getChildren().clear();
 
         VBox choiceBox = new VBox(20);
