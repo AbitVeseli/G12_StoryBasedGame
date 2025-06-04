@@ -465,8 +465,8 @@ public class Chapter6SceneJudas {
                                 "-fx-padding: 10 20; " +
                                 "-fx-background-radius: 20;");
                         backButton.setOnAction(event -> {
-                            StorylineScene storylineScene = new StorylineScene(primaryStage);
-                            primaryStage.setScene(storylineScene.getScene());
+                            StorylineScene newStorylineScene = new StorylineScene(primaryStage);
+                            primaryStage.setScene(newStorylineScene.asScene());
                         });
 
                         loadingContent.getChildren().add(backButton);
