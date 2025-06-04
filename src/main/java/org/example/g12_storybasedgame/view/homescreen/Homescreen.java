@@ -105,7 +105,7 @@ public class Homescreen extends Application {
         bottomBar.setStyle("-fx-alignment: center; -fx-background-color: transparent;");
         bottomBar.setPadding(new Insets(0));
 
-        String[] buttonLabels = {"StoryLine", "Visit", "Play"};
+        String[] buttonLabels = {"Visit", "Play"};
 
         Region leftSpacer = new Region();
         HBox.setHgrow(leftSpacer, Priority.ALWAYS);
