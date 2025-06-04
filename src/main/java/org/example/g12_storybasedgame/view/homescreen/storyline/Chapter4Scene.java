@@ -625,7 +625,7 @@ public class Chapter4Scene {
                 "-fx-background-radius: 20;");
         backButton.setOnAction(e -> {
             StorylineScene newStorylineScene = new StorylineScene(primaryStage);
-            primaryStage.setScene(newStorylineScene.getScene());
+            primaryStage.setScene(newStorylineScene.asScene());
         });
 
         buttonBox.getChildren().addAll(continueButton, backButton);
