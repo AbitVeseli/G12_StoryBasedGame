@@ -1,6 +1,6 @@
-Denna kod är skriven i JavaFX på Intellij För att starta programmet så klicka dig fram till "MenuManager.java", du måste vara där för att trycka på den gröna playknappen. 
+Denna kod är skriven i JavaFX på Intellij För att starta programmet så klicka dig fram till "Main", du måste vara där för att trycka på den gröna playknappen. 
 
-Detta gör så att spelet startar från början. Filväg i Intellij : src -> main -> java -> org.exemple.g12_storybasedgame -> view -> Menu -> Menumanager.Java
+Filväg i Intellij : src -> main -> java -> org.exemple.g12_storybasedgame -> controller -> Main
 
 Om delar av spelet inte syns på skärmen så kan du behöva ändra skärmstorlek på spelet eller din dator. 
 
