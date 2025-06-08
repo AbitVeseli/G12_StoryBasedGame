@@ -1,4 +1,4 @@
-Denna kod är skriven i JavaFX på Intellij För att starta programmet så klicka dig fram till "Main", du måste vara där för att trycka på den gröna playknappen. 
+Denna kod är skriven i JavaFX på Intellij För att starta programmet så klicka dig fram till "Main".
 
 Filväg i Intellij : src -> main -> java -> org.exemple.g12_storybasedgame -> controller -> Main
 
