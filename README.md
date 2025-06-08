@@ -1,4 +1,4 @@
 Denna kod är skriven i JavaFX på Intellij
-För att starta programmet så klicka dig fram till "Main.java", du måste vara där för att trycka på playknappen eller att det står "Run'Main.java' " när musen är ovanför.
-Så att programmet kan starta från början.
-Filväg: src -> main -> java -> org.exemple.g12_storybasedgame -> controller -> Main (alt Main.java)
+För att starta programmet så klicka dig fram till "MenuManager.java", du måste vara där för att trycka på den gröna playknappen. Detta gör så att spelet startar från början.
+Filväg i Intellij : src -> main -> java -> org.exemple.g12_storybasedgame -> view -> Menu -> Menumanager.Java
+Länk till ert Git-repository: https://github.com/AbitVeseli/G12_StoryBasedGame
