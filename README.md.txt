@@ -4,4 +4,4 @@ Detta gör så att spelet startar från början. Filväg i Intellij : src -> mai
 
 Om Delar av spelet inte syns på skärmen så kan du behöva ändra skärmstorlek på spelet eller din dator. 
 
-Länk till ert Git-repository: https://github.com/AbitVeseli/G12_StoryBasedGame
+Länk till ert Git-repository: https://github.com/AbitVeseli/G12_StoryBasedGame 
