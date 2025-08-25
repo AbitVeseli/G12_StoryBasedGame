@@ -6,4 +6,4 @@ Så att programmet kan starta från början.
 
 Filväg: src -> main -> java -> org.exemple.g12_storybasedgame -> controller -> Main (alt Main.java)
 
-Om Delar av spelet inte syns på skärmen så kan du behöva ändra skärmstorlek på spelet.
+Om Delar av spelet inte syns på skärmen så kan du behöva ändra skärmstorlekn på spelet.
