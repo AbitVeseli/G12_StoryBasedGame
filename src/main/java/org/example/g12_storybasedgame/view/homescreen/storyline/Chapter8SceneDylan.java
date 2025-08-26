@@ -13,6 +13,10 @@ import javafx.geometry.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.*;
+import javafx.scene.input.MouseEvent;
+import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
+import org.example.g12_storybasedgame.view.homescreen.Homescreen;
+import javafx.stage.Modality;
 
 public class Chapter8SceneDylan {
     private Scene scene;
@@ -34,6 +38,10 @@ public class Chapter8SceneDylan {
     private final String LIGHT_PINK = "#FFC2D1";
     private final String TEXT_COLOR = "#5E2D40";
 
+    // Purple color scheme for settings
+    private final String DARK_PURPLE = "#6A0DAD";
+    private final String LIGHT_PURPLE = "#E6E6FA";
+
     public Chapter8SceneDylan(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.root = new BorderPane();
@@ -42,7 +50,7 @@ public class Chapter8SceneDylan {
         loadOpeningMessages();
         showNextMessage();
 
-        scene.setOnMouseClicked(e -> handleContinue());
+        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> handleContinue());
     }
 
     private void setupUI() {
@@ -95,11 +103,31 @@ public class Chapter8SceneDylan {
         dialogContainer.getChildren().addAll(textboxHeader, dialogText);
         root.setBottom(dialogContainer);
 
+        // Top bar with settings button
         HBox topBar = new HBox();
         topBar.setAlignment(Pos.CENTER_RIGHT);
         topBar.setPadding(new Insets(15));
         topBar.setStyle("-fx-background-color: " + LIGHT_PINK + "; " +
                 "-fx-background-radius: 0 0 10 10;");
+
+        // Add settings button with image
+        Image settingsImage = new Image(getClass().getResource("/SETTINGS.png").toExternalForm());
+        ImageView settingsImageView = new ImageView(settingsImage);
+        settingsImageView.setFitWidth(40);
+        settingsImageView.setFitHeight(40);
+
+        Button settingsButton = new Button();
+        settingsButton.setGraphic(settingsImageView);
+        settingsButton.setStyle("-fx-background-color: purple;"
+                + "-fx-padding: 10;"
+                + "-fx-background-radius: 50%;"
+                + "-fx-pref-width: 40px;"
+                + "-fx-pref-height: 40px;"
+                + "-fx-cursor: hand;");
+
+        settingsButton.setOnAction(e -> showSceneSettingsPopup());
+
+        topBar.getChildren().add(settingsButton);
         root.setTop(topBar);
     }
 
@@ -368,6 +396,92 @@ public class Chapter8SceneDylan {
 
         endBox.getChildren().addAll(endLabel, thanksLabel, backButton);
         dialogContainer.getChildren().add(endBox);
+    }
+
+    // New methods for scene settings
+    private void showSceneSettingsPopup() {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Scene Settings");
+        popupStage.initOwner(primaryStage);
+
+        VBox popupLayout = new VBox(20);
+        popupLayout.setPadding(new Insets(30));
+        popupLayout.setAlignment(Pos.CENTER);
+        popupLayout.setStyle("-fx-background-color: " + LIGHT_PURPLE + "; " +
+                "-fx-border-color: " + DARK_PURPLE + "; " +
+                "-fx-border-width: 3px; " +
+                "-fx-background-radius: 15; " +
+                "-fx-border-radius: 15;");
+
+        Label titleLabel = new Label("Scene Options");
+        titleLabel.setStyle("-fx-font-size: 24px; " +
+                "-fx-text-fill: " + DARK_PURPLE + "; " +
+                "-fx-font-weight: bold;");
+
+        Button restartButton = new Button("Restart Scene");
+        restartButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;");
+
+        // Hover effect for restart button
+        restartButton.setOnMouseEntered(e -> restartButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: red; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;"));
+        restartButton.setOnMouseExited(e -> restartButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;"));
+
+        restartButton.setOnAction(e -> {
+            popupStage.close();
+            restartScene();
+        });
+
+        Button homeButton = new Button("Back to Home");
+        homeButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;");
+
+        // Hover effect for home button
+        homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: red; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;"));
+        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;"));
+
+        homeButton.setOnAction(e -> {
+            popupStage.close();
+            returnToHome();
+        });
+
+        popupLayout.getChildren().addAll(titleLabel, restartButton, homeButton);
+
+        Scene popupScene = new Scene(popupLayout, 400, 300);
+        popupStage.setScene(popupScene);
+        popupStage.showAndWait();
+    }
+
+    private void restartScene() {
+        Chapter8SceneDylan newScene = new Chapter8SceneDylan(primaryStage);
+        primaryStage.setScene(newScene.getScene());
+    }
+
+    private void returnToHome() {
+        Homescreen home = new Homescreen();
+        home.start(primaryStage);
     }
 
     public Scene getScene() {

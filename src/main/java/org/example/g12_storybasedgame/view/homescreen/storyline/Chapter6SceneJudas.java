@@ -13,6 +13,9 @@ import javafx.geometry.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.*;
+import javafx.stage.Modality;
+import org.example.g12_storybasedgame.view.homescreen.Homescreen;
+import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
 
 public class Chapter6SceneJudas {
     private Scene scene;
@@ -34,6 +37,10 @@ public class Chapter6SceneJudas {
     private final String DARK_PINK = "#FF85A2";
     private final String LIGHT_PINK = "#FFC2D1";
     private final String TEXT_COLOR = "#5E2D40";
+
+    // Purple color scheme for settings
+    private final String DARK_PURPLE = "#6A0DAD";
+    private final String LIGHT_PURPLE = "#E6E6FA";
 
     public Chapter6SceneJudas(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -96,15 +103,38 @@ public class Chapter6SceneJudas {
         dialogContainer.getChildren().addAll(textboxHeader, dialogText);
         root.setBottom(dialogContainer);
 
-        Label pointsLabel = new Label("Relationship Points: " + relationshipPoints);
-        pointsLabel.setStyle("-fx-font-size: 16px; " +
-                "-fx-text-fill: " + TEXT_COLOR + "; " +
-                "-fx-font-family: 'Arial Rounded MT Bold';");
-        HBox topBar = new HBox(pointsLabel);
+        // Top bar with relationship points and settings button
+        HBox topBar = new HBox(15);
         topBar.setAlignment(Pos.CENTER_RIGHT);
         topBar.setPadding(new Insets(15));
         topBar.setStyle("-fx-background-color: " + LIGHT_PINK + "; " +
                 "-fx-background-radius: 0 0 10 10;");
+
+        Label pointsLabel = new Label("Relationship Points: " + relationshipPoints);
+        pointsLabel.setStyle("-fx-font-size: 16px; " +
+                "-fx-text-fill: " + TEXT_COLOR + "; " +
+                "-fx-font-family: 'Arial Rounded MT Bold';");
+
+        // Add settings button with image
+        Image settingsImage = new Image(getClass().getResource("/SETTINGS.png").toExternalForm());
+        ImageView settingsImageView = new ImageView(settingsImage);
+        settingsImageView.setFitWidth(40);
+        settingsImageView.setFitHeight(40);
+
+        Button settingsButton = new Button();
+        settingsButton.setGraphic(settingsImageView);
+        settingsButton.setStyle("-fx-background-color: purple;"
+                + "-fx-padding: 10;"
+                + "-fx-background-radius: 50%;"
+                + "-fx-pref-width: 40px;"
+                + "-fx-pref-height: 40px;"
+                + "-fx-cursor: hand;");
+
+        settingsButton.setOnAction(e -> showSceneSettingsPopup());
+
+        // Use HBox to position points label and settings button
+        HBox.setHgrow(pointsLabel, Priority.ALWAYS);
+        topBar.getChildren().addAll(pointsLabel, settingsButton);
         root.setTop(topBar);
     }
 
@@ -474,6 +504,92 @@ public class Chapter6SceneJudas {
                 })
         );
         loadingTimeline.play();
+    }
+
+    // New methods for scene settings
+    private void showSceneSettingsPopup() {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Scene Settings");
+        popupStage.initOwner(primaryStage);
+
+        VBox popupLayout = new VBox(20);
+        popupLayout.setPadding(new Insets(30));
+        popupLayout.setAlignment(Pos.CENTER);
+        popupLayout.setStyle("-fx-background-color: " + LIGHT_PURPLE + "; " +
+                "-fx-border-color: " + DARK_PURPLE + "; " +
+                "-fx-border-width: 3px; " +
+                "-fx-background-radius: 15; " +
+                "-fx-border-radius: 15;");
+
+        Label titleLabel = new Label("Scene Options");
+        titleLabel.setStyle("-fx-font-size: 24px; " +
+                "-fx-text-fill: " + DARK_PURPLE + "; " +
+                "-fx-font-weight: bold;");
+
+        Button restartButton = new Button("Restart Scene");
+        restartButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;");
+
+        // Hover effect for restart button
+        restartButton.setOnMouseEntered(e -> restartButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: red; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;"));
+        restartButton.setOnMouseExited(e -> restartButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;"));
+
+        restartButton.setOnAction(e -> {
+            popupStage.close();
+            restartScene();
+        });
+
+        Button homeButton = new Button("Back to Home");
+        homeButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;");
+
+        // Hover effect for home button
+        homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: red; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;"));
+        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: " + DARK_PURPLE + "; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 18px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-background-radius: 10;"));
+
+        homeButton.setOnAction(e -> {
+            popupStage.close();
+            returnToHome();
+        });
+
+        popupLayout.getChildren().addAll(titleLabel, restartButton, homeButton);
+
+        Scene popupScene = new Scene(popupLayout, 400, 300);
+        popupStage.setScene(popupScene);
+        popupStage.showAndWait();
+    }
+
+    private void restartScene() {
+        Chapter6SceneJudas newScene = new Chapter6SceneJudas(primaryStage);
+        primaryStage.setScene(newScene.getScene());
+    }
+
+    private void returnToHome() {
+        Homescreen home = new Homescreen();
+        home.start(primaryStage);
     }
 
     public Scene getScene() {
