@@ -2,8 +2,11 @@ package org.example.g12_storybasedgame.view.homescreen;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
@@ -13,39 +16,170 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.scene.text.Font;
-import javafx.scene.control.Label;
 import javafx.util.Duration;
 import org.example.g12_storybasedgame.view.homescreen.storyline.StorylineScene;
 import org.example.g12_storybasedgame.view.homescreen.visit.CharacterSelectionScreen;
-import org.example.g12_storybasedgame.view.homescreen.visit.VisitButton;
+import org.example.g12_storybasedgame.view.menu.MenuManager;
 
 public class Homescreen extends Application {
 
     private Stage primaryStage;
+    private MenuManager menuManager;
+
+    public void setMenuManager(MenuManager menuManager) {
+        this.menuManager = menuManager;
+    }
 
     private void showPopup(String title, String[] contentItems) {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle(title);
 
-        VBox popupLayout = new VBox(10);
+        VBox popupLayout = new VBox(15);
         popupLayout.setPadding(new Insets(20));
         popupLayout.setStyle("-fx-background-color: #f0f8ff; -fx-border-color: black; -fx-border-width: 2px;");
 
-        HBox topBar = new HBox();
-        topBar.setAlignment(Pos.TOP_RIGHT);
+        // Title
+        Label titleLabel = new Label(title);
+        titleLabel.setFont(Font.font("Arial", 18));
+        titleLabel.setTextFill(Color.DARKBLUE);
+        popupLayout.getChildren().add(titleLabel);
 
-        popupLayout.getChildren().add(topBar);
-
+        // Content items
         for (String item : contentItems) {
             Label label = new Label(item);
-            label.setFont(Font.font("Arial", 16));
+            label.setFont(Font.font("Arial", 14));
             popupLayout.getChildren().add(label);
         }
 
-        Scene popupScene = new Scene(popupLayout, 300, 250);
+        // Add separator
+        Separator separator = new Separator();
+        popupLayout.getChildren().add(separator);
+
+        // Add action buttons
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        // Fullscreen toggle button
+        Button fullscreenButton = new Button(primaryStage.isFullScreen() ? "Exit Fullscreen" : "Enter Fullscreen");
+        fullscreenButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        fullscreenButton.setOnAction(e -> {
+            primaryStage.setFullScreen(!primaryStage.isFullScreen());
+            popupStage.close();
+            showPopup("Settings", contentItems); // Refresh popup to update button text
+        });
+
+        // Logout button
+        Button logoutButton = new Button("Logout");
+        logoutButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        logoutButton.setOnAction(e -> {
+            popupStage.close();
+            logout();
+        });
+
+        // Exit game button
+        Button exitButton = new Button("Exit Game");
+        exitButton.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        exitButton.setOnAction(e -> {
+            popupStage.close();
+            exitGame();
+        });
+
+        buttonBox.getChildren().addAll(fullscreenButton, logoutButton, exitButton);
+        popupLayout.getChildren().add(buttonBox);
+
+        Scene popupScene = new Scene(popupLayout, 350, 300);
         popupStage.setScene(popupScene);
         popupStage.show();
+    }
+
+    private void logout() {
+        // Show confirmation dialog
+        Stage confirmStage = new Stage();
+        confirmStage.initModality(Modality.APPLICATION_MODAL);
+        confirmStage.setTitle("Logout Confirmation");
+
+        VBox confirmLayout = new VBox(20);
+        confirmLayout.setPadding(new Insets(20));
+        confirmLayout.setAlignment(Pos.CENTER);
+        confirmLayout.setStyle("-fx-background-color: #fff3cd; -fx-border-color: #ffeaa7; -fx-border-width: 2px;");
+
+        Label messageLabel = new Label("Are you sure you want to logout?");
+        messageLabel.setFont(Font.font("Arial", 16));
+
+        HBox buttonBox = new HBox(15);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button yesButton = new Button("Yes, Logout");
+        yesButton.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        yesButton.setOnAction(e -> {
+            confirmStage.close();
+            performLogout();
+        });
+
+        Button noButton = new Button("Cancel");
+        noButton.setStyle("-fx-background-color: #6c757d; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        noButton.setOnAction(e -> confirmStage.close());
+
+        buttonBox.getChildren().addAll(yesButton, noButton);
+        confirmLayout.getChildren().addAll(messageLabel, buttonBox);
+
+        Scene confirmScene = new Scene(confirmLayout, 300, 150);
+        confirmStage.setScene(confirmScene);
+        confirmStage.show();
+    }
+
+    private void performLogout() {
+        try {
+            // Close current homescreen
+            primaryStage.close();
+
+            // Return to MenuManager (login screen)
+            Stage loginStage = new Stage();
+            MenuManager menuManager = new MenuManager();
+            menuManager.start(loginStage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Fallback: close application
+            Platform.exit();
+        }
+    }
+
+    private void exitGame() {
+        // Show confirmation dialog
+        Stage confirmStage = new Stage();
+        confirmStage.initModality(Modality.APPLICATION_MODAL);
+        confirmStage.setTitle("Exit Game");
+
+        VBox confirmLayout = new VBox(20);
+        confirmLayout.setPadding(new Insets(20));
+        confirmLayout.setAlignment(Pos.CENTER);
+        confirmLayout.setStyle("-fx-background-color: #ffe6e6; -fx-border-color: #ffcccc; -fx-border-width: 2px;");
+
+        Label messageLabel = new Label("Are you sure you want to exit the game?");
+        messageLabel.setFont(Font.font("Arial", 16));
+
+        HBox buttonBox = new HBox(15);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button yesButton = new Button("Yes, Exit");
+        yesButton.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        yesButton.setOnAction(e -> {
+            confirmStage.close();
+            Platform.exit();
+        });
+
+        Button noButton = new Button("Cancel");
+        noButton.setStyle("-fx-background-color: #6c757d; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        noButton.setOnAction(e -> confirmStage.close());
+
+        buttonBox.getChildren().addAll(yesButton, noButton);
+        confirmLayout.getChildren().addAll(messageLabel, buttonBox);
+
+        Scene confirmScene = new Scene(confirmLayout, 300, 150);
+        confirmStage.setScene(confirmScene);
+        confirmStage.show();
     }
 
     @Override
@@ -126,17 +260,17 @@ public class Homescreen extends Application {
                     storyline.getChildren().add(storylineOverlay);
                 });
             } else if (buttonLabels[i].equals("Visit")) {
-            btn.setOnAction(e -> {
-                // Use the existing CharacterSelectionScreen instead of creating new BorderPane
-                CharacterSelectionScreen selectionScreen = new CharacterSelectionScreen(primaryStage);
+                btn.setOnAction(e -> {
+                    // Use the existing CharacterSelectionScreen instead of creating new BorderPane
+                    CharacterSelectionScreen selectionScreen = new CharacterSelectionScreen(primaryStage);
 
-                // Change the background style in CharacterSelectionScreen
-                selectionScreen.setStyle("-fx-background-color: linear-gradient(to bottom, #ffb6c1, #ff69b4);");
+                    // Change the background style in CharacterSelectionScreen
+                    selectionScreen.setStyle("-fx-background-color: linear-gradient(to bottom, #ffb6c1, #ff69b4);");
 
-                StackPane visit = (StackPane) primaryStage.getScene().getRoot();
-                visit.getChildren().add(selectionScreen);
-            });
-        }
+                    StackPane visit = (StackPane) primaryStage.getScene().getRoot();
+                    visit.getChildren().add(selectionScreen);
+                });
+            }
 
             HBox.setHgrow(btn, Priority.ALWAYS);
             bottomBar.getChildren().add(btn);
