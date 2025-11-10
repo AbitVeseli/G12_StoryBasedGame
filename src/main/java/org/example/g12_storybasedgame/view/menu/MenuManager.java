@@ -3,6 +3,7 @@ package org.example.g12_storybasedgame.view.menu;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -158,13 +159,6 @@ public class MenuManager extends Application {
         settingsIcon.setFitWidth(50);
         settingsIcon.setFitHeight(50);
         settingsIcon.setPreserveRatio(true);
-        //settingsIcon.setStyle("-fx-background-radius: 20;");
-
-//        Rectangle clip = new Rectangle(50,50);
-//        clip.setArcWidth(30);
-//        clip.setArcHeight(30);
-
-        //settingsIcon.setClip(clip);
 
         settingsButton.setGraphic(settingsIcon);
         settingsButton.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.01); -fx-background-radius: 50;");
@@ -172,15 +166,12 @@ public class MenuManager extends Application {
         StackPane.setAlignment(settingsForm, Pos.TOP_LEFT);
         StackPane.setMargin(settingsForm, new Insets(-20, 0, 0, -35)); // top, right, bottom, left
 
-
-
         // Knappcontainer
         HBox buttonBox = new HBox(20, loginButton, registerButton);
         buttonBox.setAlignment(Pos.CENTER);
 
         HBox buttonBox2 = new HBox(20, settingsButton);
         buttonBox.setAlignment(Pos.TOP_LEFT);
-
 
         // Lägg till alla element i formuläret
         loginForm.getChildren().addAll(
@@ -195,7 +186,6 @@ public class MenuManager extends Application {
                 buttonBox2
         );
 
-
         // Lägg till alla lager i huvudcontainern
         mainContainer.getChildren().addAll(
                 backgroundImage,
@@ -203,7 +193,6 @@ public class MenuManager extends Application {
                 loginForm,
                 settingsForm
         );
-
 
         // Lägg till huvudcontainern i rootContainer
         rootContainer.getChildren().add(mainContainer);
@@ -224,30 +213,126 @@ public class MenuManager extends Application {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
-
             if (loginUser(usernameField.getText(), passwordField.getText())) {
                 showMainMenu();
             } else if (username.isEmpty() || password.isEmpty()) {
                 showAlert("Error", "Please fill in all fields.");
 
-        }else {
+            }else {
                 showAlert("Error", "Wrong username or password, try again!");
             }
         });
 
-        settingsButton.setOnAction(e -> {
-            showAlert("Error", "This has not yet been implemented!");
-
-        });
+        settingsButton.setOnAction(e -> showSettingsPopup());
 
         registerButton.setOnAction(e -> showRegisterScreen());
     }
 
-    // ===== SETTINGS =====
-    public void showSettingsPopUp() {
+    // ===== SETTINGS POPUP =====
+    public void showSettingsPopup() {
+        Stage popupStage = new Stage();
 
+        // Use initOwner for better fullscreen behavior
+        popupStage.initOwner(primaryStage);
+        popupStage.setTitle("Settings");
+
+        // Explicit settings to make it a small popup
+        popupStage.setFullScreen(false);
+        popupStage.setMaximized(false);
+        popupStage.setResizable(false);
+        popupStage.setAlwaysOnTop(true);
+
+        VBox popupLayout = new VBox(15);
+        popupLayout.setPadding(new Insets(20));
+        popupLayout.setStyle("-fx-background-color: #f0f8ff; -fx-border-color: black; -fx-border-width: 2px;");
+
+        // Title
+        Label titleLabel = new Label("Settings");
+        titleLabel.setFont(javafx.scene.text.Font.font("Arial", 18));
+        titleLabel.setTextFill(Color.DARKBLUE);
+        popupLayout.getChildren().add(titleLabel);
+
+        // Add separator after title
+        Separator separator = new Separator();
+        popupLayout.getChildren().add(separator);
+
+        // Add action buttons in a single row
+        HBox buttonBox = new HBox(15);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
+
+        // Exit Game button
+        Button exitButton = new Button("Exit Game");
+        exitButton.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-font-size: 14px;");
+        exitButton.setOnAction(e -> {
+            popupStage.close();
+            exitGame();
+        });
+
+        // Close button
+        Button closeButton = new Button("Close");
+        closeButton.setStyle("-fx-background-color: #6c757d; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-font-size: 14px;");
+        closeButton.setOnAction(e -> popupStage.close());
+
+        buttonBox.getChildren().addAll(exitButton, closeButton);
+        popupLayout.getChildren().add(buttonBox);
+
+        Scene popupScene = new Scene(popupLayout, 300, 150);
+        popupStage.setScene(popupScene);
+
+        // Calculate position to center the popup
+        double centerX = primaryStage.getX() + (primaryStage.getWidth() - 300) / 2;
+        double centerY = primaryStage.getY() + (primaryStage.getHeight() - 150) / 2;
+        popupStage.setX(centerX);
+        popupStage.setY(centerY);
+
+        popupStage.show();
     }
 
+    private void exitGame() {
+        Stage confirmStage = new Stage();
+        confirmStage.initOwner(primaryStage);
+        confirmStage.setTitle("Exit Game");
+        confirmStage.setFullScreen(false);
+        confirmStage.setMaximized(false);
+        confirmStage.setResizable(false);
+
+        VBox confirmLayout = new VBox(20);
+        confirmLayout.setPadding(new Insets(20));
+        confirmLayout.setAlignment(Pos.CENTER);
+        confirmLayout.setStyle("-fx-background-color: #ffe6e6; -fx-border-color: #ffcccc; -fx-border-width: 2px;");
+
+        Label messageLabel = new Label("Are you sure you want to exit the game?");
+        messageLabel.setFont(javafx.scene.text.Font.font("Arial", 16));
+
+        HBox buttonBox = new HBox(15);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button yesButton = new Button("Yes, Exit");
+        yesButton.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        yesButton.setOnAction(e -> {
+            confirmStage.close();
+            Platform.exit();
+        });
+
+        Button noButton = new Button("Cancel");
+        noButton.setStyle("-fx-background-color: #6c757d; -fx-text-fill: white; -fx-padding: 8px 16px;");
+        noButton.setOnAction(e -> confirmStage.close());
+
+        buttonBox.getChildren().addAll(yesButton, noButton);
+        confirmLayout.getChildren().addAll(messageLabel, buttonBox);
+
+        Scene confirmScene = new Scene(confirmLayout, 300, 150);
+        confirmStage.setScene(confirmScene);
+
+        // Center the exit confirmation dialog
+        double centerX = primaryStage.getX() + (primaryStage.getWidth() - 300) / 2;
+        double centerY = primaryStage.getY() + (primaryStage.getHeight() - 150) / 2;
+        confirmStage.setX(centerX);
+        confirmStage.setY(centerY);
+
+        confirmStage.show();
+    }
 
     // ===== REGISTRERING =====
     public void showRegisterScreen() {
@@ -397,14 +482,12 @@ public class MenuManager extends Application {
         return true;
     }
 
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-
     }
 
 //    public static void main(String[] args) {
